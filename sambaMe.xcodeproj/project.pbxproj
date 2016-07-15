@@ -22,6 +22,7 @@
 		E45A24901D37883800DCF424 /* CachedFileItem.m in Sources */ = {isa = PBXBuildFile; fileRef = E45A248F1D37883800DCF424 /* CachedFileItem.m */; };
 		E45A24931D37940E00DCF424 /* MeCachedFileListVC.m in Sources */ = {isa = PBXBuildFile; fileRef = E45A24921D37940E00DCF424 /* MeCachedFileListVC.m */; };
 		E488D1E31D38BB76002270FF /* fileTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = E488D1E11D38BB76002270FF /* fileTableViewCell.m */; };
+		E488D1E61D38E3E1002270FF /* CellMenuItem.m in Sources */ = {isa = PBXBuildFile; fileRef = E488D1E51D38E3E1002270FF /* CellMenuItem.m */; };
 		E4F9AEA81D34D116000A1D11 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = E4F9AEA71D34D116000A1D11 /* main.m */; };
 		E4F9AEAB1D34D116000A1D11 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = E4F9AEAA1D34D116000A1D11 /* AppDelegate.m */; };
 		E4F9AEAE1D34D116000A1D11 /* ViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = E4F9AEAD1D34D116000A1D11 /* ViewController.m */; };
@@ -77,6 +78,8 @@
 		E45A24921D37940E00DCF424 /* MeCachedFileListVC.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MeCachedFileListVC.m; sourceTree = "<group>"; };
 		E488D1E11D38BB76002270FF /* fileTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = fileTableViewCell.m; sourceTree = "<group>"; };
 		E488D1E21D38BB76002270FF /* fileTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = fileTableViewCell.h; sourceTree = "<group>"; };
+		E488D1E41D38E3E1002270FF /* CellMenuItem.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CellMenuItem.h; sourceTree = "<group>"; };
+		E488D1E51D38E3E1002270FF /* CellMenuItem.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CellMenuItem.m; sourceTree = "<group>"; };
 		E4F9AEA31D34D116000A1D11 /* sambaMe.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = sambaMe.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		E4F9AEA71D34D116000A1D11 /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
 		E4F9AEA91D34D116000A1D11 /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
@@ -197,6 +200,8 @@
 				E488D1E11D38BB76002270FF /* fileTableViewCell.m */,
 				E45A24881D37417C00DCF424 /* hostTableViewCell.h */,
 				E45A24891D37417C00DCF424 /* hostTableViewCell.m */,
+				E488D1E41D38E3E1002270FF /* CellMenuItem.h */,
+				E488D1E51D38E3E1002270FF /* CellMenuItem.m */,
 			);
 			name = custom_ui;
 			sourceTree = "<group>";
@@ -360,6 +365,7 @@
 				E4F9AEAE1D34D116000A1D11 /* ViewController.m in Sources */,
 				E488D1E31D38BB76002270FF /* fileTableViewCell.m in Sources */,
 				E45A247A1D371BF500DCF424 /* Database.m in Sources */,
+				E488D1E61D38E3E1002270FF /* CellMenuItem.m in Sources */,
 				E4F9AEC21D34D4F5000A1D11 /* MeTreeVC.m in Sources */,
 				E45A248A1D37417C00DCF424 /* hostTableViewCell.m in Sources */,
 				E4F9AEBF1D34D44D000A1D11 /* MeTabBarController.m in Sources */,

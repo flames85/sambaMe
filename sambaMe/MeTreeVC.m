@@ -16,16 +16,21 @@
 #import <QuickLook/QuickLook.h>
 #import "CachedFileItem.h"
 #import "KxSMBProvider.h"
+#import "CellMenuItem.h"
 
-@interface MeTreeVC () <FileViewControllerDelegate,KxSMBProviderDelegate,UITableViewDelegate,UITableViewDataSource,QLPreviewControllerDelegate, QLPreviewControllerDataSource>
+@interface MeTreeVC () <FileViewControllerDelegate,KxSMBProviderDelegate,UITableViewDelegate,UITableViewDataSource,QLPreviewControllerDelegate, QLPreviewControllerDataSource> {
+}
+
 @end
 
 @implementation MeTreeVC {
     
-    NSMutableArray  *_items;
+    
     UITableView     *_tableView;
     KxSMBProvider   *_provider;
     NSString        *_previewfileLocalPath;
+    NSMutableArray  *_items;
+    
 }
 
 -(id) init {
@@ -314,12 +319,98 @@
             [cell setPhotoWithImage:image];
         }
         
-        
+        UILongPressGestureRecognizer *longPressGR = [[UILongPressGestureRecognizer alloc] initWithTarget:self action:@selector(handleLongPress:)];
+        longPressGR.minimumPressDuration = 0.2;
+        [cell addGestureRecognizer:longPressGR];
     }
     
     return cell;
 }
 
+- (void)handleLongPress:(UIGestureRecognizer *)gestureRecognizer
+{
+    NSLog(@"handleLongPress:%@", @(gestureRecognizer.state));
+    if (gestureRecognizer.state == UIGestureRecognizerStateBegan)
+    {
+        CGPoint location = [gestureRecognizer locationInView:_tableView];
+        NSIndexPath * indexPath = [_tableView indexPathForRowAtPoint:location];
+        
+        FileTableViewCell *cell = (FileTableViewCell *)gestureRecognizer.view;
+        [cell becomeFirstResponder];
+        
+        CellMenuItem *itCopyPath = [[CellMenuItem alloc] initWithTitle:@"复制路径" action:@selector(handleCopyPath:)];
+        itCopyPath.indexPath = indexPath;
+        
+        CellMenuItem *itRename = [[CellMenuItem alloc] initWithTitle:@"重命名" action:@selector(handleRename:)];
+        itRename.indexPath = indexPath;
+        
+        
+        UIMenuController *menu = [UIMenuController sharedMenuController];
+        [menu setMenuItems:[NSArray arrayWithObjects:itCopyPath, itRename,  nil]];
+        [menu setTargetRect:cell.frame inView:_tableView];
+        [menu setMenuVisible:YES animated:YES];        
+    }
+}
+
+- (void)handleCopyPath:(id)sender {
+    NSLog(@"handle copy path");
+    UIMenuController *targetSender = (UIMenuController *)sender ;
+    CellMenuItem *menuItem = (CellMenuItem *)[targetSender.menuItems firstObject];
+    
+    NSLog(@"%@", @(menuItem.indexPath.row));
+    KxSMBItem *item = _items[menuItem.indexPath.row];
+    
+    UIPasteboard *pasteboard = [UIPasteboard generalPasteboard];
+    pasteboard.string = item.path;
+    
+}
+
+- (void)handleRename:(id)sender {
+    NSLog(@"handle rename cell");
+    UIMenuController *targetSender = (UIMenuController *)sender ;
+    CellMenuItem *menuItem = (CellMenuItem *)[targetSender.menuItems lastObject];
+    NSLog(@"%@", @(menuItem.indexPath.row));
+    
+    KxSMBItem *item = _items[menuItem.indexPath.row];
+    
+    UIAlertController *alertController = [UIAlertController alertControllerWithTitle:@"输入信息" message:@"请输入新文件名" preferredStyle:UIAlertControllerStyleAlert];
+    
+    // action
+    UIAlertAction *cancelAction = [UIAlertAction actionWithTitle:@"取消" style:UIAlertActionStyleCancel handler:nil];
+    UIAlertAction *okAction = [UIAlertAction actionWithTitle:@"好的" style:UIAlertActionStyleDefault handler:^(UIAlertAction *action) {
+        NSString *newPath = alertController.textFields[0].text;
+        NSLog(@"rename [%@] to [%@]", item.path, newPath);
+        
+        [_provider renameAtPath:item.path
+                        newPath:newPath
+                           auth:self.auth
+                          block:^(id  _Nullable result) {
+                              if ([result isKindOfClass:[NSError class]]) {
+                                  NSLog(@"fail:%@", ((NSError *)result).localizedDescription);
+                              } else {
+                                  NSLog(@"rename ok");
+                                  [self accessWithPath:self.path withAuth:self.auth];
+                              }
+                          }];
+    }];
+    
+    // textfiled
+    [alertController addTextFieldWithConfigurationHandler:^(UITextField *textField){
+        textField.placeholder = @"新文件名";
+        textField.text = item.path;
+    }];
+    
+    
+    [alertController addAction:cancelAction];
+    [alertController addAction:okAction];
+    
+    [self presentViewController:alertController animated:YES completion:nil];
+    
+    
+    
+
+    
+}
 
 #pragma mark - delegate UITableViewDataSource 删除操作的返回字符
 -(NSString*)tableView:(UITableView *)tableView titleForDeleteConfirmationButtonForRowAtIndexPath:(NSIndexPath *)indexPath
