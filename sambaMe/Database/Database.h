@@ -10,7 +10,7 @@
 
 @class HostItem;
 @class CachedFileItem;
-
+@class FavoriteItem;
 
 @interface Database : NSObject
 
@@ -22,14 +22,21 @@
 -(BOOL)addHost:(HostItem*)item;
 -(BOOL)delHostWithSequence:(NSInteger)sequence;
 -(BOOL)updateHostStateWithSequence:(NSInteger)sequence withState:(BOOL)state withDesc:(NSString*)desc;
--(BOOL)updateAccessTimeWithSequence:(NSInteger)sequence withTime:(NSString*)time;
+-(BOOL)updateAccessTimeWithSequence:(NSInteger)sequence withTime:(NSString*)time withDesc:desc;
 
 // cached
 -(NSMutableArray*)getAllCachedFile;
 -(BOOL)addCachedFileWithItem:(CachedFileItem*)item;
--(CachedFileItem*)getCachedFileWithHashKey:(NSString*)hashKey;
+-(CachedFileItem*)getCachedFileWithKey:(NSString*)key;
+-(BOOL)delCachedFileWithKey:(NSString*)key;
 
--(BOOL)delCachedFileWithHashKey:(NSString*)hashKey;
+// favorite
+
+-(NSMutableArray*)getAllFavorite;
+-(BOOL)addFavoriteWithItem:(FavoriteItem*)item;
+-(BOOL)delFavoriteWithKey:(NSInteger)sequence;
+
+
 
 
 @end

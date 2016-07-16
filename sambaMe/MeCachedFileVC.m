@@ -6,20 +6,19 @@
 //  Copyright © 2016年 sq. All rights reserved.
 //
 #import <QuickLook/QuickLook.h>
-#import "MeCachedFileListVC.h"
+#import "MeCachedFileVC.h"
 #import "Database.h"
 #import "CommonTool.h"
 #import "FileTableViewCell.h"
 #import "Common.h"
 #import "CachedFileItem.h"
 
-@interface MeCachedFileListVC () <UITableViewDelegate,UITableViewDataSource,QLPreviewControllerDelegate,QLPreviewControllerDataSource>
+@interface MeCachedFileVC () <UITableViewDelegate,UITableViewDataSource,QLPreviewControllerDelegate,QLPreviewControllerDataSource>
 @end
 
-@implementation MeCachedFileListVC {
+@implementation MeCachedFileVC {
     NSMutableArray  *_items;
     UITableView     *_tableView;
-    NSString        *_previewfileLocalPath;
 }
 
 -(id) init {
@@ -152,11 +151,10 @@
                                                                      NSUserDomainMask,
                                                                      YES) lastObject];
     
-    _previewfileLocalPath = [NSString stringWithFormat:@"%@/%@", documentsFolder, item.localPath];
-    
-    
-    if ([QLPreviewController canPreviewItem:[NSURL fileURLWithPath:_previewfileLocalPath]]) {
+    NSString *previewfileLocalPath = [NSString stringWithFormat:@"%@/%@", documentsFolder, item.localPath];
+    if ([QLPreviewController canPreviewItem:[NSURL fileURLWithPath:previewfileLocalPath]]) {
         QLPreviewController *vc = [QLPreviewController new];
+        vc.currentPreviewItemIndex = indexPath.row;
         vc.delegate = self;
         vc.dataSource = self;
         self.hidesBottomBarWhenPushed = YES;
@@ -179,7 +177,7 @@
         NSLog(@"删除index[%@]", @(indexPath.row));
         // 先删除DB
         CachedFileItem *item = _items[indexPath.row];
-        [[Database sharedDatabase] delCachedFileWithHashKey:item.hashKey];
+        [[Database sharedDatabase] delCachedFileWithKey:item.key];
         
         // 再删文件
         NSString *documentsFolder = [NSSearchPathForDirectoriesInDomains(NSDocumentDirectory,
@@ -215,12 +213,22 @@
 
 - (NSInteger)numberOfPreviewItemsInPreviewController:(QLPreviewController *)controller
 {
-    return 1;
+    return _items.count;
 }
 
 - (id <QLPreviewItem>)previewController:(QLPreviewController *)controller previewItemAtIndex:(NSInteger)index
 {
-    return [NSURL fileURLWithPath:_previewfileLocalPath];
+    NSLog(@"get index[%@]", @(index));
+    
+    CachedFileItem *item = _items[index];
+    
+    NSString *documentsFolder = [NSSearchPathForDirectoriesInDomains(NSDocumentDirectory,
+                                                                     NSUserDomainMask,
+                                                                     YES) lastObject];
+    
+    NSString *previewfileLocalPath = [NSString stringWithFormat:@"%@/%@", documentsFolder, item.localPath];
+    
+    return [NSURL fileURLWithPath:previewfileLocalPath];
 }
 
 @end

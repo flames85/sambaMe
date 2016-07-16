@@ -12,7 +12,7 @@
 
 -(id)init;
 
-@property(nonatomic,copy)NSString                          *hashKey;
+@property(nonatomic,copy)NSString                          *key;
 @property(nonatomic,copy)NSString                          *localPath;
 @property(nonatomic,copy)NSString                          *remotePath;
 

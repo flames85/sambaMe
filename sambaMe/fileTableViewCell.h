@@ -24,6 +24,7 @@
 // 右上角描述
 - (void)setDescLabelWithText:(NSString*)text withBackGroubdColor:(UIColor*)color;
 
+-(void)clearMark;
 // 蓝色标记
 - (void)setBlueMark;
 // 红色标记

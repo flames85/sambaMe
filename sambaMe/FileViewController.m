@@ -37,6 +37,7 @@
 #import <QuickLook/QuickLook.h>
 #import "Database.h"
 #import "CachedFileItem.h"
+#import "NSString+Hashing.h"
 
 @interface FileViewController () <QLPreviewControllerDelegate, QLPreviewControllerDataSource>
 @end
@@ -196,8 +197,8 @@
                                                                 YES) lastObject];
 
         // _smbFile.path.lastPathComponent
-        NSString *hashKey = [NSString stringWithFormat:@"%@", @([_smbFile.path hash])];
-        NSString *folder = [NSString stringWithFormat:@"%@/%@", documentsFolder, hashKey];
+        NSString *key = [_smbFile.path MD5Hash];
+        NSString *folder = [NSString stringWithFormat:@"%@/%@", documentsFolder, key];
         
         NSError *error = nil;
         
@@ -309,11 +310,11 @@
                     [_downloadButton setTitle:@"Done" forState:UIControlStateNormal];
                     _downloadButton.enabled = NO;
                     
-                    // save hash key
+                    // save md5 key
                     CachedFileItem *item = [[CachedFileItem alloc] init];
-                    item.hashKey = [NSString stringWithFormat:@"%@", @([_smbFile.path hash])];
+                    item.key = [_smbFile.path MD5Hash];
                     // 拼上相对本地路径
-                    item.localPath = [NSString stringWithFormat:@"%@/%@", [NSString stringWithFormat:@"%@", @([_smbFile.path hash])], _smbFile.path.lastPathComponent];
+                    item.localPath = [NSString stringWithFormat:@"%@/%@", item.key, _smbFile.path.lastPathComponent];
                     item.remotePath = _smbFile.path;
                     item.size = _downloadedBytes;
                     item.readMark = YES;

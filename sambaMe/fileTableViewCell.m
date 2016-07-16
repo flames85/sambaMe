@@ -155,6 +155,10 @@
     return self;
 }
 
+- (void)clearMark {
+    self.headPointView.hidden = YES;
+}
+
 - (void)setBlueMark {
     self.headPointView.hidden = NO;
     self.headPointView.backgroundColor = [CommonTool skyBlueColor];
@@ -167,9 +171,13 @@
 
 - (void)setSecondLabelWithText:(NSString*)text
 {
-    NSMutableAttributedString *str = [[NSMutableAttributedString alloc] initWithString:text];
-    [str addAttribute:NSForegroundColorAttributeName value:[UIColor darkGrayColor] range:NSMakeRange(0, text.length)];
-    _secondTextLabel.attributedText = str;
+    if (nil != text) {
+        NSMutableAttributedString *str = [[NSMutableAttributedString alloc] initWithString:text];
+        [str addAttribute:NSForegroundColorAttributeName value:[UIColor darkGrayColor] range:NSMakeRange(0, text.length)];
+        _secondTextLabel.attributedText = str;
+    } else {
+        _secondTextLabel.attributedText = nil;
+    }
 }
 
 - (void)setIsFile:(BOOL)isFile withDesc:(NSString*)desc {

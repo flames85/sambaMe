@@ -17,6 +17,8 @@
 #import "CachedFileItem.h"
 #import "KxSMBProvider.h"
 #import "CellMenuItem.h"
+#import "NSString+Hashing.h"
+#import "FavoriteItem.h"
 
 @interface MeTreeVC () <FileViewControllerDelegate,KxSMBProviderDelegate,UITableViewDelegate,UITableViewDataSource,QLPreviewControllerDelegate, QLPreviewControllerDataSource> {
 }
@@ -138,6 +140,7 @@
          if ([result isKindOfClass:[NSError class]]) {
              NSString *desc = ((NSError *)result).localizedDescription;
              NSLog(@"fail:%@", ((NSError *)result).localizedDescription);
+             // 更新状态
              [[Database sharedDatabase] updateHostStateWithSequence:sequence withState:NO withDesc:desc];
              [self.navigationController popViewControllerAnimated:YES];
              
@@ -149,7 +152,13 @@
              }
              NSLog(@"OK");
              [_tableView reloadData];
-             [[Database sharedDatabase] updateHostStateWithSequence:sequence withState:YES withDesc:@"正常"];
+             // 更新访问时间和描述(状态修改为OK)
+             NSDate *nowDate  = [NSDate date];
+             NSDateFormatter *dateFormat = [NSDateFormatter new];
+             [dateFormat setDateFormat:@"yyyy年MM月dd日-HH:mm"];
+             NSString *time = [dateFormat stringFromDate:nowDate];
+             [[Database sharedDatabase] updateAccessTimeWithSequence:sequence withTime:time withDesc:@"正常"];
+             
          }
      }];
 }
@@ -205,12 +214,12 @@
 
 #pragma mark - delegate UITableViewDataSource 可移动
 - (BOOL)tableView:(UITableView *)tableView canMoveRowAtIndexPath:(NSIndexPath *)indexPath {
-    return YES;
+    return NO;
 }
 #pragma mark - delegate UITableViewDataSource  可编辑
 - (BOOL)tableView:(UITableView *)tableView canEditRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    return YES;
+    return NO;
 }
 
 #pragma mark - delegate UITableViewDataSource 当移动了某一行时候会调用
@@ -239,7 +248,7 @@
             cell = [[FileTableViewCell alloc] initWithStyle:UITableViewCellStyleSubtitle reuseIdentifier:cellIdentifier height:TABLEVIEW_CELL_HEIGHT];
         }
         
-        id item = _items[indexPath.row]; // KxSMBItemFile/ KxSMBItemTree
+        KxSMBItem *item = _items[indexPath.row]; // KxSMBItemFile/ KxSMBItemTree
         
         if ([item isKindOfClass:[KxSMBItemFile class]]) {
             
@@ -259,8 +268,8 @@
                    withBackGroubdColor:[CommonTool skyBlueColor]];
             
             
-            NSString *hashKey = [NSString stringWithFormat:@"%@", @([file.path hash])];
-            CachedFileItem *casedFileItem = [[Database sharedDatabase] getCachedFileWithHashKey:hashKey];
+            NSString *key = [file.path MD5Hash];
+            CachedFileItem *casedFileItem = [[Database sharedDatabase] getCachedFileWithKey:key];
             
             if(nil != casedFileItem)
             {
@@ -277,6 +286,11 @@
                     
                     [cell setBlueMark];
                 }
+            } else {
+                // 必须清除以下信息, 因为从缓存中获取的cell可能已经含有
+                [cell setSecondLabelWithText:nil];
+                cell.localPath = nil;
+                [cell clearMark];
             }
             
             // 文件/目录
@@ -299,18 +313,13 @@
             } else {
                 desc = @"N/A";
             }
-            
             [cell setDescLabelWithText: [NSString stringWithFormat:@"%@", desc]
                    withBackGroubdColor:[CommonTool skyBlueColor]];
             
-//            // 时间
-//            if(nil != folder.stat.lastModified)
-//            {
-//                NSDateFormatter *dateFormat = [NSDateFormatter new];
-//                [dateFormat setDateFormat:@"上次更新:yyyy年MM月dd日-HH:mm"];
-//                NSString * time = [dateFormat stringFromDate:folder.stat.lastModified];
-//                [cell setSecondLabelWithText:time];
-//            }
+            // 目录没有以下信息
+            [cell setSecondLabelWithText:nil];
+            cell.localPath = nil;
+            [cell clearMark];
             
             // 文件/目录
             [cell setIsFile:NO withDesc:@"目录"];
@@ -344,34 +353,41 @@
         CellMenuItem *itRename = [[CellMenuItem alloc] initWithTitle:@"重命名" action:@selector(handleRename:)];
         itRename.indexPath = indexPath;
         
+        CellMenuItem *itFavorite = [[CellMenuItem alloc] initWithTitle:@"收藏" action:@selector(handleFavorite:)];
+        itFavorite.indexPath = indexPath;
+        
         
         UIMenuController *menu = [UIMenuController sharedMenuController];
-        [menu setMenuItems:[NSArray arrayWithObjects:itCopyPath, itRename,  nil]];
+        [menu setMenuItems:[NSArray arrayWithObjects:itCopyPath, itRename, itFavorite, nil]];
         [menu setTargetRect:cell.frame inView:_tableView];
         [menu setMenuVisible:YES animated:YES];        
     }
 }
 
+
 - (void)handleCopyPath:(id)sender {
-    NSLog(@"handle copy path");
     UIMenuController *targetSender = (UIMenuController *)sender ;
-    CellMenuItem *menuItem = (CellMenuItem *)[targetSender.menuItems firstObject];
+    CellMenuItem *menuItem = (CellMenuItem *)targetSender.menuItems[0];
     
-    NSLog(@"%@", @(menuItem.indexPath.row));
+    
     KxSMBItem *item = _items[menuItem.indexPath.row];
     
     UIPasteboard *pasteboard = [UIPasteboard generalPasteboard];
     pasteboard.string = item.path;
     
+    NSLog(@"handle copy path: %@:%@", @(menuItem.indexPath.row), item.path);
+    
 }
 
 - (void)handleRename:(id)sender {
-    NSLog(@"handle rename cell");
+    
     UIMenuController *targetSender = (UIMenuController *)sender ;
-    CellMenuItem *menuItem = (CellMenuItem *)[targetSender.menuItems lastObject];
+    CellMenuItem *menuItem = (CellMenuItem *)targetSender.menuItems[1];
     NSLog(@"%@", @(menuItem.indexPath.row));
     
     KxSMBItem *item = _items[menuItem.indexPath.row];
+    
+    NSLog(@"handle rename cell:%@:%@", @(menuItem.indexPath.row), item.path);
     
     UIAlertController *alertController = [UIAlertController alertControllerWithTitle:@"输入信息" message:@"请输入新文件名" preferredStyle:UIAlertControllerStyleAlert];
     
@@ -405,12 +421,32 @@
     [alertController addAction:okAction];
     
     [self presentViewController:alertController animated:YES completion:nil];
-    
-    
-    
-
-    
 }
+
+- (void)handleFavorite:(id)sender {
+    NSLog(@"handle copy path");
+    UIMenuController *targetSender = (UIMenuController *)sender ;
+    CellMenuItem *menuItem = (CellMenuItem *)targetSender.menuItems[2];
+    
+    NSLog(@"%@", @(menuItem.indexPath.row));
+    KxSMBItem *item = _items[menuItem.indexPath.row];
+    
+    // save favorite
+    FavoriteItem *favoriteItem = [[FavoriteItem alloc] init];
+    favoriteItem.remotePath = item.path;
+    favoriteItem.size = item.stat.size;
+    
+    if ([item isKindOfClass:[KxSMBItemTree class]]) {
+        favoriteItem.isFile = NO;
+    } else if ([item isKindOfClass:[KxSMBItemFile class]]) {
+        favoriteItem.isFile = YES;
+    }
+    
+    favoriteItem.user = self.auth.username;
+    favoriteItem.password = self.auth.password;
+    [[Database sharedDatabase] addFavoriteWithItem:favoriteItem];
+}
+
 
 #pragma mark - delegate UITableViewDataSource 删除操作的返回字符
 -(NSString*)tableView:(UITableView *)tableView titleForDeleteConfirmationButtonForRowAtIndexPath:(NSIndexPath *)indexPath
@@ -458,9 +494,7 @@
             vc.smbFile = smbFile;
             vc.delegate = self;
             
-            self.hidesBottomBarWhenPushed = YES;
             [self.navigationController pushViewController:vc animated:YES];
-            self.hidesBottomBarWhenPushed = NO;
         }
     }
 }

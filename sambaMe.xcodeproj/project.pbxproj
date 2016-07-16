@@ -7,6 +7,9 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		E43B0D891D3994B8001CC26F /* NSString+Hashing.m in Sources */ = {isa = PBXBuildFile; fileRef = E43B0D881D3994B8001CC26F /* NSString+Hashing.m */; };
+		E43B0D8F1D399849001CC26F /* MeFavoriteVC.m in Sources */ = {isa = PBXBuildFile; fileRef = E43B0D8E1D399849001CC26F /* MeFavoriteVC.m */; };
+		E43B0D921D39A2FD001CC26F /* FavoriteItem.m in Sources */ = {isa = PBXBuildFile; fileRef = E43B0D911D39A2FD001CC26F /* FavoriteItem.m */; };
 		E45A246B1D3717AD00DCF424 /* FMDatabase.m in Sources */ = {isa = PBXBuildFile; fileRef = E45A24621D3717AD00DCF424 /* FMDatabase.m */; };
 		E45A246C1D3717AD00DCF424 /* FMDatabaseAdditions.m in Sources */ = {isa = PBXBuildFile; fileRef = E45A24641D3717AD00DCF424 /* FMDatabaseAdditions.m */; };
 		E45A246D1D3717AD00DCF424 /* FMDatabasePool.m in Sources */ = {isa = PBXBuildFile; fileRef = E45A24661D3717AD00DCF424 /* FMDatabasePool.m */; };
@@ -20,7 +23,7 @@
 		E45A248A1D37417C00DCF424 /* hostTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = E45A24891D37417C00DCF424 /* hostTableViewCell.m */; };
 		E45A248D1D37797900DCF424 /* FileViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = E45A248C1D37797900DCF424 /* FileViewController.m */; };
 		E45A24901D37883800DCF424 /* CachedFileItem.m in Sources */ = {isa = PBXBuildFile; fileRef = E45A248F1D37883800DCF424 /* CachedFileItem.m */; };
-		E45A24931D37940E00DCF424 /* MeCachedFileListVC.m in Sources */ = {isa = PBXBuildFile; fileRef = E45A24921D37940E00DCF424 /* MeCachedFileListVC.m */; };
+		E45A24931D37940E00DCF424 /* MeCachedFileVC.m in Sources */ = {isa = PBXBuildFile; fileRef = E45A24921D37940E00DCF424 /* MeCachedFileVC.m */; };
 		E488D1E31D38BB76002270FF /* fileTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = E488D1E11D38BB76002270FF /* fileTableViewCell.m */; };
 		E488D1E61D38E3E1002270FF /* CellMenuItem.m in Sources */ = {isa = PBXBuildFile; fileRef = E488D1E51D38E3E1002270FF /* CellMenuItem.m */; };
 		E4F9AEA81D34D116000A1D11 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = E4F9AEA71D34D116000A1D11 /* main.m */; };
@@ -48,6 +51,12 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		E43B0D871D3994B8001CC26F /* NSString+Hashing.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSString+Hashing.h"; sourceTree = "<group>"; };
+		E43B0D881D3994B8001CC26F /* NSString+Hashing.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSString+Hashing.m"; sourceTree = "<group>"; };
+		E43B0D8D1D399849001CC26F /* MeFavoriteVC.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MeFavoriteVC.h; sourceTree = "<group>"; };
+		E43B0D8E1D399849001CC26F /* MeFavoriteVC.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MeFavoriteVC.m; sourceTree = "<group>"; };
+		E43B0D901D39A2FD001CC26F /* FavoriteItem.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FavoriteItem.h; sourceTree = "<group>"; };
+		E43B0D911D39A2FD001CC26F /* FavoriteItem.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FavoriteItem.m; sourceTree = "<group>"; };
 		E45A24611D3717AD00DCF424 /* FMDatabase.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FMDatabase.h; sourceTree = "<group>"; };
 		E45A24621D3717AD00DCF424 /* FMDatabase.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FMDatabase.m; sourceTree = "<group>"; };
 		E45A24631D3717AD00DCF424 /* FMDatabaseAdditions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FMDatabaseAdditions.h; sourceTree = "<group>"; };
@@ -74,8 +83,8 @@
 		E45A248C1D37797900DCF424 /* FileViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FileViewController.m; sourceTree = "<group>"; };
 		E45A248E1D37883800DCF424 /* CachedFileItem.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CachedFileItem.h; sourceTree = "<group>"; };
 		E45A248F1D37883800DCF424 /* CachedFileItem.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CachedFileItem.m; sourceTree = "<group>"; };
-		E45A24911D37940E00DCF424 /* MeCachedFileListVC.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MeCachedFileListVC.h; sourceTree = "<group>"; };
-		E45A24921D37940E00DCF424 /* MeCachedFileListVC.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MeCachedFileListVC.m; sourceTree = "<group>"; };
+		E45A24911D37940E00DCF424 /* MeCachedFileVC.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MeCachedFileVC.h; sourceTree = "<group>"; };
+		E45A24921D37940E00DCF424 /* MeCachedFileVC.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MeCachedFileVC.m; sourceTree = "<group>"; };
 		E488D1E11D38BB76002270FF /* fileTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = fileTableViewCell.m; sourceTree = "<group>"; };
 		E488D1E21D38BB76002270FF /* fileTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = fileTableViewCell.h; sourceTree = "<group>"; };
 		E488D1E41D38E3E1002270FF /* CellMenuItem.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CellMenuItem.h; sourceTree = "<group>"; };
@@ -139,9 +148,46 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		E43B0D861D3994B8001CC26F /* Hash */ = {
+			isa = PBXGroup;
+			children = (
+				E43B0D871D3994B8001CC26F /* NSString+Hashing.h */,
+				E43B0D881D3994B8001CC26F /* NSString+Hashing.m */,
+			);
+			path = Hash;
+			sourceTree = "<group>";
+		};
+		E43B0D8A1D399778001CC26F /* tabBar_1 */ = {
+			isa = PBXGroup;
+			children = (
+				E45A247E1D3721E600DCF424 /* MeHostListVC.h */,
+				E45A247F1D3721E600DCF424 /* MeHostListVC.m */,
+			);
+			name = tabBar_1;
+			sourceTree = "<group>";
+		};
+		E43B0D8B1D3997A0001CC26F /* tabBar_2 */ = {
+			isa = PBXGroup;
+			children = (
+				E45A24911D37940E00DCF424 /* MeCachedFileVC.h */,
+				E45A24921D37940E00DCF424 /* MeCachedFileVC.m */,
+			);
+			name = tabBar_2;
+			sourceTree = "<group>";
+		};
+		E43B0D8C1D3997A6001CC26F /* tabBar_3 */ = {
+			isa = PBXGroup;
+			children = (
+				E43B0D8D1D399849001CC26F /* MeFavoriteVC.h */,
+				E43B0D8E1D399849001CC26F /* MeFavoriteVC.m */,
+			);
+			name = tabBar_3;
+			sourceTree = "<group>";
+		};
 		E45A244F1D37178200DCF424 /* ThirdParty */ = {
 			isa = PBXGroup;
 			children = (
+				E43B0D861D3994B8001CC26F /* Hash */,
 				E45A24501D37178200DCF424 /* FMDB */,
 			);
 			path = ThirdParty;
@@ -188,6 +234,8 @@
 				E45A247C1D371C0A00DCF424 /* HostItem.m */,
 				E45A248E1D37883800DCF424 /* CachedFileItem.h */,
 				E45A248F1D37883800DCF424 /* CachedFileItem.m */,
+				E43B0D901D39A2FD001CC26F /* FavoriteItem.h */,
+				E43B0D911D39A2FD001CC26F /* FavoriteItem.m */,
 			);
 			name = Database;
 			path = sambaMe/Database;
@@ -227,6 +275,15 @@
 		E4F9AEA51D34D116000A1D11 /* sambaMe */ = {
 			isa = PBXGroup;
 			children = (
+				E4F9AEBD1D34D44D000A1D11 /* MeTabBarController.h */,
+				E4F9AEBE1D34D44D000A1D11 /* MeTabBarController.m */,
+				E4F9AEC01D34D4F5000A1D11 /* MeTreeVC.h */,
+				E4F9AEC11D34D4F5000A1D11 /* MeTreeVC.m */,
+				E45A248B1D37797900DCF424 /* FileViewController.h */,
+				E45A248C1D37797900DCF424 /* FileViewController.m */,
+				E43B0D8C1D3997A6001CC26F /* tabBar_3 */,
+				E43B0D8B1D3997A0001CC26F /* tabBar_2 */,
+				E43B0D8A1D399778001CC26F /* tabBar_1 */,
 				E488D1E01D38BAA1002270FF /* custom_ui */,
 				E45A24771D371BF500DCF424 /* Database */,
 				E45A244F1D37178200DCF424 /* ThirdParty */,
@@ -239,16 +296,6 @@
 				E4F9AEB41D34D116000A1D11 /* LaunchScreen.storyboard */,
 				E4F9AEB71D34D116000A1D11 /* Info.plist */,
 				E4F9AEA61D34D116000A1D11 /* Supporting Files */,
-				E4F9AEBD1D34D44D000A1D11 /* MeTabBarController.h */,
-				E4F9AEBE1D34D44D000A1D11 /* MeTabBarController.m */,
-				E45A248B1D37797900DCF424 /* FileViewController.h */,
-				E45A248C1D37797900DCF424 /* FileViewController.m */,
-				E4F9AEC01D34D4F5000A1D11 /* MeTreeVC.h */,
-				E4F9AEC11D34D4F5000A1D11 /* MeTreeVC.m */,
-				E45A247E1D3721E600DCF424 /* MeHostListVC.h */,
-				E45A247F1D3721E600DCF424 /* MeHostListVC.m */,
-				E45A24911D37940E00DCF424 /* MeCachedFileListVC.h */,
-				E45A24921D37940E00DCF424 /* MeCachedFileListVC.m */,
 				E45A24811D3726F700DCF424 /* Common.h */,
 				E45A24821D37345300DCF424 /* CommonTool.h */,
 				E45A24831D37345300DCF424 /* CommonTool.m */,
@@ -371,10 +418,13 @@
 				E4F9AEBF1D34D44D000A1D11 /* MeTabBarController.m in Sources */,
 				E4F9AEAB1D34D116000A1D11 /* AppDelegate.m in Sources */,
 				E4F9AEA81D34D116000A1D11 /* main.m in Sources */,
+				E43B0D921D39A2FD001CC26F /* FavoriteItem.m in Sources */,
 				E45A24801D3721E600DCF424 /* MeHostListVC.m in Sources */,
 				E45A246C1D3717AD00DCF424 /* FMDatabaseAdditions.m in Sources */,
+				E43B0D891D3994B8001CC26F /* NSString+Hashing.m in Sources */,
+				E43B0D8F1D399849001CC26F /* MeFavoriteVC.m in Sources */,
 				E45A246F1D3717AD00DCF424 /* FMResultSet.m in Sources */,
-				E45A24931D37940E00DCF424 /* MeCachedFileListVC.m in Sources */,
+				E45A24931D37940E00DCF424 /* MeCachedFileVC.m in Sources */,
 				E4F9AEE11D34DA6B000A1D11 /* KxSMBProvider.m in Sources */,
 				E45A246D1D3717AD00DCF424 /* FMDatabasePool.m in Sources */,
 				E45A248D1D37797900DCF424 /* FileViewController.m in Sources */,

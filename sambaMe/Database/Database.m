@@ -11,6 +11,7 @@
 #import "FMDatabase.h"
 #import "HostItem.h"
 #import "CachedFileItem.h"
+#import "FavoriteItem.h"
 
 static Database *gl_database = nil;
 
@@ -39,6 +40,7 @@ static Database *gl_database = nil;
         {
             [self createHostTable];
             [self createCachedFileTable];
+            [self createFavoriteTable];
         }
     }
     return self;
@@ -96,7 +98,7 @@ static Database *gl_database = nil;
 -(void)createCachedFileTable
 {
     NSString *sql = @"create table if not exists tb_cachedfile("
-    @"hashkey TEXT(1024) PRIMARY KEY NOT NULL,"
+    @"key TEXT(1024) PRIMARY KEY NOT NULL,"
     @"localpath TEXT(1024),"
     @"remotepath TEXT(1024),"
     @"size LONG LONG INT DEFAULT 0,"
@@ -112,6 +114,27 @@ static Database *gl_database = nil;
     else
     {
         NSLog(@"(db)create tb_cachedfile if not exists 失败：%@",[_fmdb lastErrorMessage]);
+    }
+}
+-(void)createFavoriteTable {
+    NSString *sql = @"create table if not exists tb_favorite("
+    @"sequence INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,"
+    @"remotepath TEXT(1024),"
+    @"isfile INT DEFAULT 1,"
+    @"size LONG LONG INT DEFAULT 0,"
+    @"user TEXT(1024),"
+    @"password TEXT(1024)"
+    @")";
+    
+    // 执行sql语句，创建表，增，删，改都用这个方法
+    if([_fmdb executeUpdate:sql])
+    {
+        NSLog(@"(db)create tb_favorite if not exists 成功");
+        
+    }
+    else
+    {
+        NSLog(@"(db)create tb_favorite if not exists 失败：%@",[_fmdb lastErrorMessage]);
     }
 }
 
@@ -183,10 +206,10 @@ static Database *gl_database = nil;
 
 }
 
--(BOOL)updateAccessTimeWithSequence:(NSInteger)sequence withTime:(NSString*)time {
-    NSString *sql = [NSString stringWithFormat:@"UPDATE tb_host SET time=(?) where sequence=(?)"];
+-(BOOL)updateAccessTimeWithSequence:(NSInteger)sequence withTime:(NSString*)time withDesc:desc {
+    NSString *sql = [NSString stringWithFormat:@"UPDATE tb_host SET time=(?), state=(?), desc=(?) where sequence=(?)"];
     
-    if(![_fmdb executeUpdate:sql, time, @(sequence)])
+    if(![_fmdb executeUpdate:sql, time, @(YES), desc, @(sequence)])
     {
         NSLog(@"(db)更新失败：%@", [_fmdb lastErrorMessage]);
         return NO;
@@ -209,7 +232,7 @@ static Database *gl_database = nil;
     while([ret next])
     {
         CachedFileItem *item = [[CachedFileItem alloc] init];
-        item.hashKey = [ret stringForColumn:@"hashkey"];
+        item.key = [ret stringForColumn:@"key"];
         item.localPath = [ret stringForColumn:@"localpath"];
         item.remotePath = [ret stringForColumn:@"remotepath"];
         item.size = [[ret stringForColumn:@"size"] integerValue];
@@ -220,10 +243,10 @@ static Database *gl_database = nil;
 }
 
 -(BOOL)addCachedFileWithItem:(CachedFileItem*)item {
-    NSString *sql = [NSString stringWithFormat:@"INSERT INTO tb_cachedfile(hashkey,localpath,remotepath,size,readmark)"
+    NSString *sql = [NSString stringWithFormat:@"INSERT INTO tb_cachedfile(key,localpath,remotepath,size,readmark)"
                      @"values(?,?,?,?,?)"];
     
-    if(![_fmdb executeUpdate:sql, item.hashKey, item.localPath, item.remotePath, @(item.size), @(item.readMark)])
+    if(![_fmdb executeUpdate:sql, item.key, item.localPath, item.remotePath, @(item.size), @(item.readMark)])
     {
         NSLog(@"(db)插入失败：%@", [_fmdb lastErrorMessage]);
         return NO;
@@ -231,16 +254,16 @@ static Database *gl_database = nil;
     NSLog(@"(db)插入成功");
     return YES;
 }
--(CachedFileItem*)getCachedFileWithHashKey:(NSString*)hashKey {
-    NSString *sql = [NSString stringWithFormat:@"SELECT * FROM tb_cachedfile where hashkey=(?)"];
+-(CachedFileItem*)getCachedFileWithKey:(NSString*)key {
+    NSString *sql = [NSString stringWithFormat:@"SELECT * FROM tb_cachedfile where key=(?)"];
     
     // 执行查询
-    FMResultSet *ret = [_fmdb executeQuery:sql, hashKey];
+    FMResultSet *ret = [_fmdb executeQuery:sql, key];
     CachedFileItem *item = nil;
     if([ret next])
     {
         item = [[CachedFileItem alloc] init];
-        item.hashKey = [ret stringForColumn:@"hashkey"];
+        item.key = [ret stringForColumn:@"key"];
         item.localPath = [ret stringForColumn:@"localpath"];
         item.remotePath = [ret stringForColumn:@"remotepath"];
         
@@ -251,19 +274,66 @@ static Database *gl_database = nil;
     return item;
     
 }
--(BOOL)delCachedFileWithHashKey:(NSString*)hashKey {
+-(BOOL)delCachedFileWithKey:(NSString*)key {
     
-    NSString *sql = [NSString stringWithFormat:@"DELETE FROM tb_cachedfile WHERE hashkey=(?)"];
+    NSString *sql = [NSString stringWithFormat:@"DELETE FROM tb_cachedfile WHERE key=(?)"];
     
     // 执行查询
-    if(![_fmdb executeUpdate:sql, hashKey])
+    if(![_fmdb executeUpdate:sql, key])
     {
-        NSLog(@"(db)删除[%@]失败：%@", hashKey, [_fmdb lastErrorMessage]);
+        NSLog(@"(db)删除[%@]失败：%@", key, [_fmdb lastErrorMessage]);
         return NO;
     }
-    NSLog(@"(db)删除[%@]成功", hashKey);
+    NSLog(@"(db)删除[%@]成功", key);
     return YES;
 }
 
+
+-(NSMutableArray*)getAllFavorite {
+    NSString *sql = [NSString stringWithFormat:@"SELECT * FROM tb_favorite ORDER BY sequence DESC"];
+    
+    NSMutableArray *itemArray = [[NSMutableArray alloc ] init];
+    // 执行查询
+    FMResultSet *ret = [_fmdb executeQuery:sql];
+    
+    while([ret next])
+    {
+        FavoriteItem *item = [[FavoriteItem alloc] init];
+        item.sequence = [[ret stringForColumn:@"sequence"] longLongValue];
+        item.remotePath = [ret stringForColumn:@"remotepath"];
+        item.size = [[ret stringForColumn:@"size"] longLongValue];
+        item.isFile = [[ret stringForColumn:@"isfile"] boolValue];
+        item.user = [ret stringForColumn:@"user"];
+        item.password = [ret stringForColumn:@"password"];
+        [itemArray addObject:item];
+    }
+    return itemArray;
+
+}
+-(BOOL)addFavoriteWithItem:(FavoriteItem*)item {
+    NSString *sql = [NSString stringWithFormat:@"INSERT INTO tb_favorite(remotepath,size,isfile,user,password)"
+                     @"values(?,?,?,?,?)"];
+    
+    if(![_fmdb executeUpdate:sql, item.remotePath, @(item.size), @(item.isFile), item.user, item.password])
+    {
+        NSLog(@"(db)插入失败：%@", [_fmdb lastErrorMessage]);
+        return NO;
+    }
+    NSLog(@"(db)插入成功");
+    return YES;
+
+}
+-(BOOL)delFavoriteWithKey:(NSInteger)sequence {
+    NSString *sql = [NSString stringWithFormat:@"DELETE FROM tb_favorite WHERE sequence=(?)"];
+    
+    // 执行查询
+    if(![_fmdb executeUpdate:sql, @(sequence)])
+    {
+        NSLog(@"(db)删除[%@]失败：%@", @(sequence), [_fmdb lastErrorMessage]);
+        return NO;
+    }
+    NSLog(@"(db)删除[%@]成功", @(sequence));
+    return YES;
+}
 
 @end

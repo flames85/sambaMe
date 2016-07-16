@@ -11,6 +11,15 @@
 
 @interface CommonTool : NSObject
 
+
+// 使用颜色创建UIImage
++ (UIImage*)getImageWithColor:(UIColor*)color withSize:(CGSize)size;
+
+//图片缩放到指定大小尺寸
++ (UIImage *)scaleToSize:(UIImage *)img size:(CGSize)size;
+
+
+
 +(UIColor*)stableGreenColor;
 +(UIColor*)grassGreenColor;
 +(UIColor*)skyBlueColor;

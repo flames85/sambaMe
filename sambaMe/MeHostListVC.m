@@ -82,13 +82,13 @@
     UIAlertAction *cancelAction = [UIAlertAction actionWithTitle:@"取消" style:UIAlertActionStyleCancel handler:nil];
     UIAlertAction *okAction = [UIAlertAction actionWithTitle:@"好的" style:UIAlertActionStyleDefault handler:^(UIAlertAction *action) {
         
-        NSString *defaultHost = alertController.textFields[0].text;
-        NSString *defaultUser = alertController.textFields[1].text;
-        NSString *defaultPassword = alertController.textFields[2].text;
+        NSString *host = alertController.textFields[0].text;
+        NSString *user = alertController.textFields[1].text;
+        NSString *password = alertController.textFields[2].text;
         
-        [[NSUserDefaults standardUserDefaults] setObject:defaultHost forKey:@"defaultHost"];
-        [[NSUserDefaults standardUserDefaults] setObject:defaultUser forKey:@"defaultUser"];
-        [[NSUserDefaults standardUserDefaults] setObject:defaultPassword forKey:@"defaultPassword"];
+        [[NSUserDefaults standardUserDefaults] setObject:host forKey:@"defaultHost"];
+        [[NSUserDefaults standardUserDefaults] setObject:user forKey:@"defaultUser"];
+        [[NSUserDefaults standardUserDefaults] setObject:password forKey:@"defaultPassword"];
         [[NSUserDefaults standardUserDefaults] synchronize];
         
         // 移除监控
@@ -97,14 +97,10 @@
         // 连接
         MeTreeVC *vc = [[MeTreeVC alloc] init];
         KxSMBAuth *auth = [KxSMBAuth smbAuthWorkgroup:@""
-                                            username:defaultUser
-                                            password:defaultPassword];;
-        NSString *path = [NSString stringWithFormat:@"smb://%@", defaultHost];
-        
-        self.hidesBottomBarWhenPushed = YES;
+                                            username:user
+                                            password:password];;
         [self.navigationController pushViewController:vc animated:YES];
-        [vc loginWithPath:path withAuth:auth];
-        self.hidesBottomBarWhenPushed = NO;
+        [vc loginWithPath:host withAuth:auth];
     }];
     
     
@@ -112,7 +108,10 @@
     [alertController addTextFieldWithConfigurationHandler:^(UITextField *textField){
         textField.placeholder = @"服务器";
         textField.text = [[NSUserDefaults standardUserDefaults] objectForKey:@"defaultHost"];
-        okAction.enabled = textField.text.length > 2;
+        if( 0 == textField.text.length ) {
+            textField.text = @"smb://";
+        }
+        okAction.enabled = textField.text.length > 10;
         
         // 监控textfield变化
         [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(alertTextFieldDidChange:) name:UITextFieldTextDidChangeNotification object:textField];
@@ -225,16 +224,7 @@
                                         password:item.password];;
     [vc loginWithPath:item.host withAuth:auth withLoadSequence:item.sequence];
     
-    self.hidesBottomBarWhenPushed = YES;
     [self.navigationController pushViewController:vc animated:YES];
-    self.hidesBottomBarWhenPushed = NO;
-    
-    // update access time
-    NSDate *nowDate  = [NSDate date];
-    NSDateFormatter *dateFormat = [NSDateFormatter new];
-    [dateFormat setDateFormat:@"yyyy年MM月dd日-HH:mm"];
-    item.time = [dateFormat stringFromDate:nowDate];
-    [[Database sharedDatabase] updateAccessTimeWithSequence:item.sequence withTime:item.time];
 }
 
 #pragma mark - delegate UITableViewDataSource 取消选中

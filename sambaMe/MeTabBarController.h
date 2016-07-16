@@ -9,14 +9,15 @@
 #import <UIKit/UIKit.h>
 
 @class MeHostListVC;
-@class MeCachedFileListVC;
+@class MeCachedFileVC;
+@class MeFavoriteVC;
 
 @interface MeTabBarController : UITabBarController 
 
 -(id)init;
 
-@property(nonatomic, strong) MeHostListVC                    *hostVC;
-@property(nonatomic, strong) MeCachedFileListVC              *cachedVC;
-
+@property(nonatomic, strong) MeHostListVC                *hostVC;
+@property(nonatomic, strong) MeCachedFileVC              *cachedVC;
+@property(nonatomic, strong) MeFavoriteVC                *favoriteVC;
 @end;
 
