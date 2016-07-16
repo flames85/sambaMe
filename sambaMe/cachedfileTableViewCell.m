@@ -241,47 +241,46 @@
 
 
 - (void)setupProgressView {
-    
+    // 圆圈
     self.progressView = [[UAProgressView alloc] init];
+    self.progressView.borderWidth = 2.0;
+    self.progressView.lineWidth = 2.0;
     [self.progressView setTranslatesAutoresizingMaskIntoConstraints:NO];
     [self.contentView addSubview:self.progressView];
     self.progressView.tintColor = [UIColor purpleColor];
-
     
-    [self.progressView.centralView setTranslatesAutoresizingMaskIntoConstraints:NO];
-    
-    
+    // 进度条被更新
     __weak typeof (self) weakSelf = self;
-    
     self.progressView.progressChangedBlock = ^(UAProgressView *progressView, CGFloat progress) {
         [weakSelf.progressLabel setText:[NSString stringWithFormat:@"%2.0f%%", progress * 100]];
+        if (1.0f == progress) {
+            [weakSelf.progressLabel setText:@"OK"];
+        }
     };
-    
     [self.contentView addConstraint:[NSLayoutConstraint constraintWithItem:self.progressView attribute:NSLayoutAttributeCenterY relatedBy:NSLayoutRelationEqual toItem:self.contentView attribute:NSLayoutAttributeCenterY multiplier:0.45f constant:0]];
     
     [self.contentView addConstraint:[NSLayoutConstraint constraintWithItem:self.progressView attribute:NSLayoutAttributeWidth relatedBy:NSLayoutRelationEqual toItem:nil attribute:NSLayoutAttributeWidth multiplier:1 constant:36]];
     
     [self.contentView addConstraint:[NSLayoutConstraint constraintWithItem:self.progressView attribute:NSLayoutAttributeRight relatedBy:NSLayoutRelationEqual toItem:self.contentView attribute:NSLayoutAttributeRight multiplier:1 constant:-5]];
     
-    
-    // 数值
+    // 进度数值
     _progressLabel = [[UILabel alloc] init];
     [_progressLabel setTranslatesAutoresizingMaskIntoConstraints:NO];
     _progressLabel.font = [UIFont systemFontOfSize:12];
     [_progressLabel setTextAlignment:NSTextAlignmentCenter];
     [self.contentView addSubview:_progressLabel];
-    
     [self.contentView addConstraint:[NSLayoutConstraint constraintWithItem:_progressLabel attribute:NSLayoutAttributeCenterY relatedBy:NSLayoutRelationEqual toItem:self.contentView attribute:NSLayoutAttributeCenterY multiplier:1 constant:0]];
     [self.contentView addConstraint:[NSLayoutConstraint constraintWithItem:_progressLabel attribute:NSLayoutAttributeCenterX relatedBy:NSLayoutRelationEqual toItem:self.progressView attribute:NSLayoutAttributeCenterX multiplier:1 constant:0]];
-    
-    [_progressLabel setText:@"30%"];
-    
 }
 
-
+// 进度更新
 - (void)updateProgress:(NSTimer *)timer {
-    _localProgress = ((int)((_localProgress * 100.0f) + 1.01) % 100) / 100.0f;
+//    _localProgress = ((int)((_localProgress * 100.0f) + 1.01) % 100) / 100.0f;
+    _localProgress += 0.01f;
     [self.progressView setProgress:_localProgress];
+    if (1.0f == _localProgress) {
+        [timer invalidate];
+    }
 }
 
 @end
