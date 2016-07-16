@@ -20,7 +20,7 @@
 #import "NSString+Hashing.h"
 #import "FavoriteItem.h"
 
-@interface MeTreeVC () <FileViewControllerDelegate,KxSMBProviderDelegate,UITableViewDelegate,UITableViewDataSource,QLPreviewControllerDelegate, QLPreviewControllerDataSource> {
+@interface MeTreeVC () <UIActionSheetDelegate,FileViewControllerDelegate,KxSMBProviderDelegate,UITableViewDelegate,UITableViewDataSource,QLPreviewControllerDelegate, QLPreviewControllerDataSource> {
 }
 
 @end
@@ -350,15 +350,12 @@
         CellMenuItem *itCopyPath = [[CellMenuItem alloc] initWithTitle:@"复制路径" action:@selector(handleCopyPath:)];
         itCopyPath.indexPath = indexPath;
         
-        CellMenuItem *itRename = [[CellMenuItem alloc] initWithTitle:@"重命名" action:@selector(handleRename:)];
-        itRename.indexPath = indexPath;
-        
-        CellMenuItem *itFavorite = [[CellMenuItem alloc] initWithTitle:@"收藏" action:@selector(handleFavorite:)];
+        CellMenuItem *itFavorite = [[CellMenuItem alloc] initWithTitle:@"查看" action:@selector(handleDetails:)];
         itFavorite.indexPath = indexPath;
         
         
         UIMenuController *menu = [UIMenuController sharedMenuController];
-        [menu setMenuItems:[NSArray arrayWithObjects:itCopyPath, itRename, itFavorite, nil]];
+        [menu setMenuItems:[NSArray arrayWithObjects:itCopyPath, itFavorite, nil]];
         [menu setTargetRect:cell.frame inView:_tableView];
         [menu setMenuVisible:YES animated:YES];        
     }
@@ -369,89 +366,127 @@
     UIMenuController *targetSender = (UIMenuController *)sender ;
     CellMenuItem *menuItem = (CellMenuItem *)targetSender.menuItems[0];
     
-    
     KxSMBItem *item = _items[menuItem.indexPath.row];
     
     UIPasteboard *pasteboard = [UIPasteboard generalPasteboard];
     pasteboard.string = item.path;
     
     NSLog(@"handle copy path: %@:%@", @(menuItem.indexPath.row), item.path);
-    
 }
 
-- (void)handleRename:(id)sender {
-    
+- (void)handleDetails:(id)sender {
+    NSLog(@"handle detail ");
     UIMenuController *targetSender = (UIMenuController *)sender ;
-    CellMenuItem *menuItem = (CellMenuItem *)targetSender.menuItems[1];
-    NSLog(@"%@", @(menuItem.indexPath.row));
-    
+    CellMenuItem *menuItem = (CellMenuItem *)targetSender.menuItems[0];
     KxSMBItem *item = _items[menuItem.indexPath.row];
-    
-    NSLog(@"handle rename cell:%@:%@", @(menuItem.indexPath.row), item.path);
-    
-    UIAlertController *alertController = [UIAlertController alertControllerWithTitle:@"输入信息" message:@"请输入新文件名" preferredStyle:UIAlertControllerStyleAlert];
-    
-    // action
-    UIAlertAction *cancelAction = [UIAlertAction actionWithTitle:@"取消" style:UIAlertActionStyleCancel handler:nil];
-    UIAlertAction *okAction = [UIAlertAction actionWithTitle:@"好的" style:UIAlertActionStyleDefault handler:^(UIAlertAction *action) {
-        NSString *newPath = alertController.textFields[0].text;
-        NSLog(@"rename [%@] to [%@]", item.path, newPath);
-        
-        [_provider renameAtPath:item.path
-                        newPath:newPath
-                           auth:self.auth
-                          block:^(id  _Nullable result) {
-                              if ([result isKindOfClass:[NSError class]]) {
-                                  NSLog(@"fail:%@", ((NSError *)result).localizedDescription);
-                              } else {
-                                  NSLog(@"rename ok");
-                                  [self accessWithPath:self.path withAuth:self.auth];
-                              }
-                          }];
-    }];
-    
-    // textfiled
-    [alertController addTextFieldWithConfigurationHandler:^(UITextField *textField){
-        textField.placeholder = @"新文件名";
-        textField.text = item.path;
-    }];
-    
-    
-    [alertController addAction:cancelAction];
-    [alertController addAction:okAction];
-    
-    [self presentViewController:alertController animated:YES completion:nil];
+    NSLog(@"see detail path: %@:%@", @(menuItem.indexPath.row), item.path);
 }
-
-- (void)handleFavorite:(id)sender {
-    NSLog(@"handle copy path");
-    UIMenuController *targetSender = (UIMenuController *)sender ;
-    CellMenuItem *menuItem = (CellMenuItem *)targetSender.menuItems[2];
-    
-    NSLog(@"%@", @(menuItem.indexPath.row));
-    KxSMBItem *item = _items[menuItem.indexPath.row];
-    
-    // save favorite
-    FavoriteItem *favoriteItem = [[FavoriteItem alloc] init];
-    favoriteItem.remotePath = item.path;
-    favoriteItem.size = item.stat.size;
-    
-    if ([item isKindOfClass:[KxSMBItemTree class]]) {
-        favoriteItem.isFile = NO;
-    } else if ([item isKindOfClass:[KxSMBItemFile class]]) {
-        favoriteItem.isFile = YES;
-    }
-    
-    favoriteItem.user = self.auth.username;
-    favoriteItem.password = self.auth.password;
-    [[Database sharedDatabase] addFavoriteWithItem:favoriteItem];
-}
-
 
 #pragma mark - delegate UITableViewDataSource 删除操作的返回字符
 -(NSString*)tableView:(UITableView *)tableView titleForDeleteConfirmationButtonForRowAtIndexPath:(NSIndexPath *)indexPath
 {
     return @"删除";
+}
+
+#pragma mark - delegate UITableViewDelegate 点击accessory
+- (void)tableView:(UITableView *)tableView accessoryButtonTappedForRowWithIndexPath:(NSIndexPath *)indexPath
+{
+    [tableView deselectRowAtIndexPath:indexPath animated:YES];
+    
+    KxSMBItem *item = _items[indexPath.row];
+    
+    // 底部的action sheet
+    UIAlertController *alertController = [UIAlertController alertControllerWithTitle:@"操作"
+                                                                             message:@"请选择"
+                                                                      preferredStyle:UIAlertControllerStyleActionSheet];
+    
+    // 1. 取消
+    UIAlertAction *cancelAction = [UIAlertAction actionWithTitle:@"取消" style:UIAlertActionStyleCancel handler:^(UIAlertAction *action) {
+        NSLog(@"选择取消");
+    }];
+    
+    [alertController addAction:cancelAction];
+    
+    // 2. 下载, 只有文件可以下载
+    if ([item isKindOfClass:[KxSMBItemFile class]])
+    {
+        UIAlertAction *downloadAction = [UIAlertAction actionWithTitle:@"下载"
+                                                                 style:UIAlertActionStyleDestructive
+                                                               handler:^(UIAlertAction *action) {
+                                                                   NSLog(@"选择了下载:%@", item.path);
+                                                               }];
+        [alertController addAction:downloadAction];
+
+    }
+
+    // 3. 修改名称
+    UIAlertAction *renameAction = [UIAlertAction actionWithTitle:@"修改名称"
+                                                           style:UIAlertActionStyleDefault
+                                                         handler:^(UIAlertAction *action) {
+        NSLog(@"选择了修改名称:%@", item.path);
+        
+        UIAlertController *alertController = [UIAlertController alertControllerWithTitle:@"输入信息" message:@"请输入新文件名" preferredStyle:UIAlertControllerStyleAlert];
+        
+        // action
+        UIAlertAction *cancelAction = [UIAlertAction actionWithTitle:@"取消" style:UIAlertActionStyleCancel handler:nil];
+        UIAlertAction *okAction = [UIAlertAction actionWithTitle:@"好的" style:UIAlertActionStyleDefault handler:^(UIAlertAction *action) {
+            NSString *newPath = alertController.textFields[0].text;
+            NSLog(@"rename [%@] to [%@]", item.path, newPath);
+            
+            [_provider renameAtPath:item.path
+                            newPath:newPath
+                               auth:self.auth
+                              block:^(id  _Nullable result) {
+                                  if ([result isKindOfClass:[NSError class]]) {
+                                      NSLog(@"fail:%@", ((NSError *)result).localizedDescription);
+                                  } else {
+                                      NSLog(@"rename ok");
+                                      [self accessWithPath:self.path withAuth:self.auth];
+                                  }
+                              }];
+        }];
+        
+        [alertController addTextFieldWithConfigurationHandler:^(UITextField *textField){
+            textField.placeholder = @"新文件名";
+            textField.text = item.path;
+        }];
+        
+        [alertController addAction:cancelAction];
+        [alertController addAction:okAction];
+        
+        [self presentViewController:alertController animated:YES completion:nil];
+    }];
+    [alertController addAction:renameAction];
+    
+    // 4. 收藏
+    UIAlertAction *favoriteAction = [UIAlertAction actionWithTitle:@"收藏"
+                                                             style:UIAlertActionStyleDefault
+                                                           handler:^(UIAlertAction *action) {
+                                                               
+                                                               NSLog(@"选择了收藏:%@", item.path);
+                                                               
+                                                               // save favorite
+                                                               FavoriteItem *favoriteItem = [[FavoriteItem alloc] init];
+                                                               favoriteItem.remotePath = item.path;
+                                                               favoriteItem.size = item.stat.size;
+                                                               
+                                                               if ([item isKindOfClass:[KxSMBItemTree class]]) {
+                                                                   favoriteItem.isFile = NO;
+                                                               } else if ([item isKindOfClass:[KxSMBItemFile class]]) {
+                                                                   favoriteItem.isFile = YES;
+                                                               }
+                                                               
+                                                               favoriteItem.user = self.auth.username;
+                                                               favoriteItem.password = self.auth.password;
+                                                               [[Database sharedDatabase] addFavoriteWithItem:favoriteItem];
+                                                               
+                                                               
+                                                           }];
+    [alertController addAction:favoriteAction];
+    
+    
+    [self presentViewController:alertController animated:YES completion:nil];
+    
 }
 
 #pragma mark - delegate UITableViewDataSource 点击cell跳转/选中cell
@@ -540,5 +575,7 @@
 -(void)updateWithRow:(NSInteger)row {
     [_tableView reloadRowsAtIndexPaths:[NSArray arrayWithObject:[NSIndexPath indexPathForRow:row inSection:0]] withRowAnimation:UITableViewRowAnimationNone];
 }
+
+
 
 @end

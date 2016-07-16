@@ -1,25 +1,29 @@
 //
-//  FileTableViewCell
+//  CachedFileTableViewCell
 //  assessDamage
 //
 //  Created by Shao.Admin on 16/6/14.
 //  Copyright © 2016年 洪伟. All rights reserved.
 //
 
-#import "FileTableViewCell.h"
+#import "CachedFileTableViewCell.h"
 #import "CommonTool.h"
 #import "DataBase.h"
 #import "Common.h"
+#import "UAProgressView.h"
 
-@interface FileTableViewCell()
+@interface CachedFileTableViewCell()
 
 @property (strong, nonatomic) UIView           *headPointView;
+@property (nonatomic, strong) UAProgressView     *progressView;
 
+@property (nonatomic, assign) CGFloat           localProgress;
+@property (nonatomic, strong) UILabel           *progressLabel;
 @end
 
 
 
-@implementation FileTableViewCell {
+@implementation CachedFileTableViewCell {
     // 次label
     UILabel          *_secondTextLabel;
     // 状态
@@ -31,6 +35,7 @@
     // 按钮
     UIButton         *_operateBtn;
     
+
 }
 
 - (id)initWithStyle:(UITableViewCellStyle)style reuseIdentifier:(NSString *)reuseIdentifier height:(CGFloat)height
@@ -38,7 +43,7 @@
     self = [super initWithStyle:style reuseIdentifier:reuseIdentifier];
     if (self)
     {
-        self.accessoryType = UITableViewCellAccessoryDetailButton;
+        self.accessoryType = UITableViewCellAccessoryNone;
         
         self.height = height;
         // 小点
@@ -75,7 +80,7 @@
         [self.contentView addConstraint:[NSLayoutConstraint constraintWithItem:_photoImage attribute:NSLayoutAttributeHeight relatedBy:NSLayoutRelationEqual toItem:nil attribute:NSLayoutAttributeHeight multiplier:1 constant:self.height*0.8]];
         
         
-        // main label
+        // 主 label
         self.mainTextLabel = [[UILabel alloc] init];
         [self.contentView addSubview:self.mainTextLabel];
         [self.mainTextLabel setTranslatesAutoresizingMaskIntoConstraints:NO]; // Autolayout
@@ -88,23 +93,20 @@
         // 高度
         [self addConstraint:[NSLayoutConstraint constraintWithItem:self.mainTextLabel attribute:NSLayoutAttributeHeight relatedBy:NSLayoutRelationEqual toItem:nil attribute:NSLayoutAttributeHeight multiplier:1 constant:self.height/2]];
   
-        // second label
+  
+        // 次级描述
         _secondTextLabel = [[UILabel alloc] init];
         [self.contentView addSubview:_secondTextLabel];
         [_secondTextLabel setTranslatesAutoresizingMaskIntoConstraints:NO]; // Autolayout
         _secondTextLabel.font = [UIFont systemFontOfSize:14];
-        
         [self.contentView addConstraint:[NSLayoutConstraint constraintWithItem:_secondTextLabel attribute:NSLayoutAttributeLeft relatedBy:NSLayoutRelationEqual toItem:_photoImage attribute:NSLayoutAttributeRight multiplier:1 constant:8]];
         // Y轴
         [self addConstraint:[NSLayoutConstraint constraintWithItem:_secondTextLabel attribute:NSLayoutAttributeCenterY relatedBy:NSLayoutRelationEqual toItem:self.contentView attribute:NSLayoutAttributeCenterY multiplier:1.4 constant:0]];
         // 高度
         [self addConstraint:[NSLayoutConstraint constraintWithItem:_secondTextLabel attribute:NSLayoutAttributeHeight relatedBy:NSLayoutRelationEqual toItem:nil attribute:NSLayoutAttributeHeight multiplier:1 constant:self.height/2]];
         
-        
-        // state label
+        // 字节数
         _stateDescLabel = [[UILabel alloc] init];
-
-        // 为了不和autosizing冲突，我们设置No
         [_stateDescLabel setTranslatesAutoresizingMaskIntoConstraints:NO]; // Autolayout
         [self.contentView addSubview:_stateDescLabel];
         // 字体大小
@@ -114,25 +116,20 @@
         // 圆角
         _stateDescLabel.layer.cornerRadius = 5.0f;
         _stateDescLabel.layer.masksToBounds = YES;
-//        _stateDescLabel.backgroundColor = [CommonTool skyBlueColor];
-        // 边框
-//        _stateDescLabel.layer.borderColor = [[CommonTool skyBlueColor] CGColor];
         _stateDescLabel.layer.borderWidth = 0;
         
         // x轴约束
-        [self.contentView addConstraint:[NSLayoutConstraint constraintWithItem:_stateDescLabel attribute:NSLayoutAttributeRight relatedBy:NSLayoutRelationEqual toItem:self.contentView attribute:NSLayoutAttributeRight multiplier:1 constant:0]];
+        [self.contentView addConstraint:[NSLayoutConstraint constraintWithItem:_stateDescLabel attribute:NSLayoutAttributeRight relatedBy:NSLayoutRelationEqual toItem:self.contentView attribute:NSLayoutAttributeRight multiplier:1 constant:-45]];
         
         // y轴
         [self.contentView addConstraint:[NSLayoutConstraint constraintWithItem:_stateDescLabel attribute:NSLayoutAttributeCenterY relatedBy:NSLayoutRelationEqual toItem:_secondTextLabel attribute:NSLayoutAttributeCenterY multiplier:1 constant:0]];
         
         // x轴约束
-        [self.contentView addConstraint:[NSLayoutConstraint constraintWithItem:_secondTextLabel attribute:NSLayoutAttributeRight relatedBy:NSLayoutRelationLessThanOrEqual toItem:_stateDescLabel attribute:NSLayoutAttributeLeft multiplier:1 constant:0]];
+        [self.contentView addConstraint:[NSLayoutConstraint constraintWithItem:_secondTextLabel attribute:NSLayoutAttributeRight relatedBy:NSLayoutRelationLessThanOrEqual toItem:_stateDescLabel attribute:NSLayoutAttributeLeft multiplier:1 constant:-10]];
     
         
-        // type label(主要是在线/离线)
+        // 文件还是目录
         _typeDescLabel = [[UILabel alloc] init];
-        
-        // 为了不和autosizing冲突，我们设置No
         [_typeDescLabel setTranslatesAutoresizingMaskIntoConstraints:NO]; // Autolayout
         [self.contentView addSubview:_typeDescLabel];
         // 字体大小
@@ -146,13 +143,18 @@
         _stateDescLabel.layer.borderWidth = 0;
         
         // x轴约束
-        [self.contentView addConstraint:[NSLayoutConstraint constraintWithItem:_typeDescLabel attribute:NSLayoutAttributeRight relatedBy:NSLayoutRelationEqual toItem:self.contentView attribute:NSLayoutAttributeRight multiplier:1 constant:0]];
+        [self.contentView addConstraint:[NSLayoutConstraint constraintWithItem:_typeDescLabel attribute:NSLayoutAttributeRight relatedBy:NSLayoutRelationEqual toItem:self.contentView attribute:NSLayoutAttributeRight multiplier:1 constant:-45]];
         
         // y轴
         [self.contentView addConstraint:[NSLayoutConstraint constraintWithItem:_typeDescLabel attribute:NSLayoutAttributeCenterY relatedBy:NSLayoutRelationEqual toItem:self.mainTextLabel attribute:NSLayoutAttributeCenterY multiplier:1 constant:0]];
         
         // x轴约束
-        [self.contentView addConstraint:[NSLayoutConstraint constraintWithItem:self.mainTextLabel attribute:NSLayoutAttributeRight relatedBy:NSLayoutRelationLessThanOrEqual toItem:_typeDescLabel attribute:NSLayoutAttributeLeft multiplier:1 constant:0]];
+        [self.contentView addConstraint:[NSLayoutConstraint constraintWithItem:self.mainTextLabel attribute:NSLayoutAttributeRight relatedBy:NSLayoutRelationLessThanOrEqual toItem:_typeDescLabel attribute:NSLayoutAttributeLeft multiplier:1 constant:-10]];
+        
+        
+        [NSTimer scheduledTimerWithTimeInterval:0.05 target:self selector:@selector(updateProgress:) userInfo:nil repeats:YES];
+        
+        [self setupProgressView];
 
     }
     return self;
@@ -235,6 +237,51 @@
 
 - (BOOL)canBecomeFirstResponder{
     return YES;
+}
+
+
+- (void)setupProgressView {
+    
+    self.progressView = [[UAProgressView alloc] init];
+    [self.progressView setTranslatesAutoresizingMaskIntoConstraints:NO];
+    [self.contentView addSubview:self.progressView];
+    self.progressView.tintColor = [UIColor purpleColor];
+
+    
+    [self.progressView.centralView setTranslatesAutoresizingMaskIntoConstraints:NO];
+    
+    
+    __weak typeof (self) weakSelf = self;
+    
+    self.progressView.progressChangedBlock = ^(UAProgressView *progressView, CGFloat progress) {
+        [weakSelf.progressLabel setText:[NSString stringWithFormat:@"%2.0f%%", progress * 100]];
+    };
+    
+    [self.contentView addConstraint:[NSLayoutConstraint constraintWithItem:self.progressView attribute:NSLayoutAttributeCenterY relatedBy:NSLayoutRelationEqual toItem:self.contentView attribute:NSLayoutAttributeCenterY multiplier:0.45f constant:0]];
+    
+    [self.contentView addConstraint:[NSLayoutConstraint constraintWithItem:self.progressView attribute:NSLayoutAttributeWidth relatedBy:NSLayoutRelationEqual toItem:nil attribute:NSLayoutAttributeWidth multiplier:1 constant:36]];
+    
+    [self.contentView addConstraint:[NSLayoutConstraint constraintWithItem:self.progressView attribute:NSLayoutAttributeRight relatedBy:NSLayoutRelationEqual toItem:self.contentView attribute:NSLayoutAttributeRight multiplier:1 constant:-5]];
+    
+    
+    // 数值
+    _progressLabel = [[UILabel alloc] init];
+    [_progressLabel setTranslatesAutoresizingMaskIntoConstraints:NO];
+    _progressLabel.font = [UIFont systemFontOfSize:12];
+    [_progressLabel setTextAlignment:NSTextAlignmentCenter];
+    [self.contentView addSubview:_progressLabel];
+    
+    [self.contentView addConstraint:[NSLayoutConstraint constraintWithItem:_progressLabel attribute:NSLayoutAttributeCenterY relatedBy:NSLayoutRelationEqual toItem:self.contentView attribute:NSLayoutAttributeCenterY multiplier:1 constant:0]];
+    [self.contentView addConstraint:[NSLayoutConstraint constraintWithItem:_progressLabel attribute:NSLayoutAttributeCenterX relatedBy:NSLayoutRelationEqual toItem:self.progressView attribute:NSLayoutAttributeCenterX multiplier:1 constant:0]];
+    
+    [_progressLabel setText:@"30%"];
+    
+}
+
+
+- (void)updateProgress:(NSTimer *)timer {
+    _localProgress = ((int)((_localProgress * 100.0f) + 1.01) % 100) / 100.0f;
+    [self.progressView setProgress:_localProgress];
 }
 
 @end

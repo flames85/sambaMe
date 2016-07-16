@@ -10,6 +10,8 @@
 		E43B0D891D3994B8001CC26F /* NSString+Hashing.m in Sources */ = {isa = PBXBuildFile; fileRef = E43B0D881D3994B8001CC26F /* NSString+Hashing.m */; };
 		E43B0D8F1D399849001CC26F /* MeFavoriteVC.m in Sources */ = {isa = PBXBuildFile; fileRef = E43B0D8E1D399849001CC26F /* MeFavoriteVC.m */; };
 		E43B0D921D39A2FD001CC26F /* FavoriteItem.m in Sources */ = {isa = PBXBuildFile; fileRef = E43B0D911D39A2FD001CC26F /* FavoriteItem.m */; };
+		E43B0D951D3A5AF5001CC26F /* cachedfileTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = E43B0D931D3A5AF5001CC26F /* cachedfileTableViewCell.m */; };
+		E43B0D991D3A6397001CC26F /* UAProgressView.m in Sources */ = {isa = PBXBuildFile; fileRef = E43B0D981D3A6397001CC26F /* UAProgressView.m */; };
 		E45A246B1D3717AD00DCF424 /* FMDatabase.m in Sources */ = {isa = PBXBuildFile; fileRef = E45A24621D3717AD00DCF424 /* FMDatabase.m */; };
 		E45A246C1D3717AD00DCF424 /* FMDatabaseAdditions.m in Sources */ = {isa = PBXBuildFile; fileRef = E45A24641D3717AD00DCF424 /* FMDatabaseAdditions.m */; };
 		E45A246D1D3717AD00DCF424 /* FMDatabasePool.m in Sources */ = {isa = PBXBuildFile; fileRef = E45A24661D3717AD00DCF424 /* FMDatabasePool.m */; };
@@ -57,6 +59,10 @@
 		E43B0D8E1D399849001CC26F /* MeFavoriteVC.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MeFavoriteVC.m; sourceTree = "<group>"; };
 		E43B0D901D39A2FD001CC26F /* FavoriteItem.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FavoriteItem.h; sourceTree = "<group>"; };
 		E43B0D911D39A2FD001CC26F /* FavoriteItem.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FavoriteItem.m; sourceTree = "<group>"; };
+		E43B0D931D3A5AF5001CC26F /* cachedfileTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = cachedfileTableViewCell.m; sourceTree = "<group>"; };
+		E43B0D941D3A5AF5001CC26F /* cachedfileTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = cachedfileTableViewCell.h; sourceTree = "<group>"; };
+		E43B0D971D3A6397001CC26F /* UAProgressView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UAProgressView.h; sourceTree = "<group>"; };
+		E43B0D981D3A6397001CC26F /* UAProgressView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = UAProgressView.m; sourceTree = "<group>"; };
 		E45A24611D3717AD00DCF424 /* FMDatabase.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FMDatabase.h; sourceTree = "<group>"; };
 		E45A24621D3717AD00DCF424 /* FMDatabase.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FMDatabase.m; sourceTree = "<group>"; };
 		E45A24631D3717AD00DCF424 /* FMDatabaseAdditions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FMDatabaseAdditions.h; sourceTree = "<group>"; };
@@ -184,9 +190,19 @@
 			name = tabBar_3;
 			sourceTree = "<group>";
 		};
+		E43B0D961D3A6397001CC26F /* UAProgressView */ = {
+			isa = PBXGroup;
+			children = (
+				E43B0D971D3A6397001CC26F /* UAProgressView.h */,
+				E43B0D981D3A6397001CC26F /* UAProgressView.m */,
+			);
+			path = UAProgressView;
+			sourceTree = "<group>";
+		};
 		E45A244F1D37178200DCF424 /* ThirdParty */ = {
 			isa = PBXGroup;
 			children = (
+				E43B0D961D3A6397001CC26F /* UAProgressView */,
 				E43B0D861D3994B8001CC26F /* Hash */,
 				E45A24501D37178200DCF424 /* FMDB */,
 			);
@@ -244,6 +260,8 @@
 		E488D1E01D38BAA1002270FF /* custom_ui */ = {
 			isa = PBXGroup;
 			children = (
+				E43B0D941D3A5AF5001CC26F /* cachedfileTableViewCell.h */,
+				E43B0D931D3A5AF5001CC26F /* cachedfileTableViewCell.m */,
 				E488D1E21D38BB76002270FF /* fileTableViewCell.h */,
 				E488D1E11D38BB76002270FF /* fileTableViewCell.m */,
 				E45A24881D37417C00DCF424 /* hostTableViewCell.h */,
@@ -258,6 +276,7 @@
 			isa = PBXGroup;
 			children = (
 				E4F9AEB21D34D116000A1D11 /* Assets.xcassets */,
+				E4F9AEAF1D34D116000A1D11 /* Main.storyboard */,
 				E45A24701D3717E000DCF424 /* Frameworks */,
 				E4F9AEA51D34D116000A1D11 /* sambaMe */,
 				E4F9AEA41D34D116000A1D11 /* Products */,
@@ -292,7 +311,6 @@
 				E4F9AEAA1D34D116000A1D11 /* AppDelegate.m */,
 				E4F9AEAC1D34D116000A1D11 /* ViewController.h */,
 				E4F9AEAD1D34D116000A1D11 /* ViewController.m */,
-				E4F9AEAF1D34D116000A1D11 /* Main.storyboard */,
 				E4F9AEB41D34D116000A1D11 /* LaunchScreen.storyboard */,
 				E4F9AEB71D34D116000A1D11 /* Info.plist */,
 				E4F9AEA61D34D116000A1D11 /* Supporting Files */,
@@ -424,7 +442,9 @@
 				E43B0D891D3994B8001CC26F /* NSString+Hashing.m in Sources */,
 				E43B0D8F1D399849001CC26F /* MeFavoriteVC.m in Sources */,
 				E45A246F1D3717AD00DCF424 /* FMResultSet.m in Sources */,
+				E43B0D951D3A5AF5001CC26F /* cachedfileTableViewCell.m in Sources */,
 				E45A24931D37940E00DCF424 /* MeCachedFileVC.m in Sources */,
+				E43B0D991D3A6397001CC26F /* UAProgressView.m in Sources */,
 				E4F9AEE11D34DA6B000A1D11 /* KxSMBProvider.m in Sources */,
 				E45A246D1D3717AD00DCF424 /* FMDatabasePool.m in Sources */,
 				E45A248D1D37797900DCF424 /* FileViewController.m in Sources */,
@@ -446,6 +466,7 @@
 				E4F9AEB01D34D116000A1D11 /* Base */,
 			);
 			name = Main.storyboard;
+			path = sambaMe;
 			sourceTree = "<group>";
 		};
 		E4F9AEB41D34D116000A1D11 /* LaunchScreen.storyboard */ = {

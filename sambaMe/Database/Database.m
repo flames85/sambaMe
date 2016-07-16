@@ -163,7 +163,7 @@ static Database *gl_database = nil;
     while([ret next])
     {
         HostItem *item = [[HostItem alloc] init];
-        item.sequence = [[ret stringForColumn:@"sequence"] intValue];
+        item.sequence = [[ret stringForColumn:@"sequence"] integerValue];
         item.host = [ret stringForColumn:@"host"];
         item.user = [ret stringForColumn:@"user"];
         item.password = [ret stringForColumn:@"password"];
@@ -299,7 +299,7 @@ static Database *gl_database = nil;
     while([ret next])
     {
         FavoriteItem *item = [[FavoriteItem alloc] init];
-        item.sequence = [[ret stringForColumn:@"sequence"] longLongValue];
+        item.sequence = [[ret stringForColumn:@"sequence"] integerValue];
         item.remotePath = [ret stringForColumn:@"remotepath"];
         item.size = [[ret stringForColumn:@"size"] longLongValue];
         item.isFile = [[ret stringForColumn:@"isfile"] boolValue];

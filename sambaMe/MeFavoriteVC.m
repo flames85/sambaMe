@@ -100,9 +100,7 @@
         {
             cell = [[FileTableViewCell alloc] initWithStyle:UITableViewCellStyleSubtitle reuseIdentifier:cellIdentifier height:TABLEVIEW_CELL_HEIGHT];
         }
-        
         FavoriteItem *item = _items[indexPath.row];
-        
         // 名称
         cell.mainTextLabel.text = item.remotePath.lastPathComponent;
         [cell setSecondLabelWithText:item.remotePath];
@@ -141,7 +139,11 @@
 {
     return @"删除";
 }
-
+#pragma mark - delegate UITableViewDelegate 点击accessory
+- (void)tableView:(UITableView *)tableView accessoryButtonTappedForRowWithIndexPath:(NSIndexPath *)indexPath
+{
+    
+}
 #pragma mark - delegate UITableViewDataSource 点击cell跳转/选中cell
 -(void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {

@@ -9,7 +9,7 @@
 #import "MeCachedFileVC.h"
 #import "Database.h"
 #import "CommonTool.h"
-#import "FileTableViewCell.h"
+#import "CachedFileTableViewCell.h"
 #import "Common.h"
 #import "CachedFileItem.h"
 
@@ -93,16 +93,17 @@
 #pragma mark - delegate UITableViewDataSource cell创建
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    static NSString *cellIdentifier = @"FileTableViewCell";
-    FileTableViewCell *cell = nil;
+    static NSString *cellIdentifier = @"CachedFileTableViewCell";
+    CachedFileTableViewCell *cell = nil;
     // 显示cell的内容
     if([_items count] > 0)
     {
         cell = [tableView dequeueReusableCellWithIdentifier:cellIdentifier];
         if (cell == nil)
         {
-            cell = [[FileTableViewCell alloc] initWithStyle:UITableViewCellStyleSubtitle reuseIdentifier:cellIdentifier height:TABLEVIEW_CELL_HEIGHT];
+            cell = [[CachedFileTableViewCell alloc] initWithStyle:UITableViewCellStyleSubtitle reuseIdentifier:cellIdentifier height:TABLEVIEW_CELL_HEIGHT];
         }
+        
         
         CachedFileItem *item = _items[indexPath.row];
         
@@ -138,6 +139,11 @@
 -(NSString*)tableView:(UITableView *)tableView titleForDeleteConfirmationButtonForRowAtIndexPath:(NSIndexPath *)indexPath
 {
     return @"删除";
+}
+#pragma mark - delegate UITableViewDelegate 点击accessory
+- (void)tableView:(UITableView *)tableView accessoryButtonTappedForRowWithIndexPath:(NSIndexPath *)indexPath
+{
+    NSLog(@"accessory!");
 }
 
 #pragma mark - delegate UITableViewDataSource 点击cell跳转/选中cell

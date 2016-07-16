@@ -12,7 +12,7 @@
 
 -(id)init;
 
-@property(nonatomic,assign)int64_t                         sequence;
+@property(nonatomic,assign)NSInteger                       sequence;
 @property(nonatomic,copy)NSString                          *remotePath;
 @property(nonatomic,assign)BOOL                            isFile;
 @property(nonatomic,assign)int64_t                         size;

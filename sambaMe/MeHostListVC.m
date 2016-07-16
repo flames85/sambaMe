@@ -69,7 +69,7 @@
     if(alertController) {
         UITextField *field = alertController.textFields.firstObject;
         UIAlertAction *okAction = alertController.actions.lastObject;
-        okAction.enabled = field.text.length > 2;
+        okAction.enabled = field.text.length > 10;
     }
 }
 
