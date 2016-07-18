@@ -9,7 +9,7 @@
 #import "MeTabBarController.h"
 #import "MeHostListVC.h"
 #import "Database.h"
-#import "MeCachedFileVC.h"
+#import "MeDownloadFileVC.h"
 #import "MeFavoriteVC.h"
 #import "CommonTool.h"
 
@@ -28,11 +28,11 @@
         [self addChildViewController:nav1];
         
         // 第2个tab
-        self.cachedVC = [[MeCachedFileVC alloc] init];
-        [self.cachedVC setTitle:@"已下载"];
-        image = [UIImage imageNamed:@"tabBar_cached"];
-        self.cachedVC.tabBarItem = [[UITabBarItem alloc] initWithTitle:@"已下载" image:image selectedImage:image];
-        UINavigationController *nav2 = [[UINavigationController alloc] initWithRootViewController:self.cachedVC];
+        self.downloadVC = [[MeDownloadFileVC alloc] init];
+        [self.downloadVC setTitle:@"下载"];
+        image = [UIImage imageNamed:@"tabBar_download"];
+        self.downloadVC.tabBarItem = [[UITabBarItem alloc] initWithTitle:@"下载" image:image selectedImage:image];
+        UINavigationController *nav2 = [[UINavigationController alloc] initWithRootViewController:self.downloadVC];
         [self addChildViewController:nav2];
         
         // 第3个tab

@@ -1,5 +1,5 @@
 //
-//  CachedFileTableViewCell
+//  DownloadTableViewCell
 //  assessDamage
 //
 //  Created by Shao.Admin on 16/6/14.
@@ -10,7 +10,17 @@
 
 #import <UIKit/UIKit.h>
 
-@interface CachedFileTableViewCell : UITableViewCell
+
+typedef NS_ENUM(NSInteger, DownloadState) {
+    //以下是枚举成员
+    STATE_DOWNLOADING = 0,
+    STATE_DOWNLOADED = 1,
+    STATE_STOPED = 2
+};
+
+@interface DownloadTableViewCell : UITableViewCell
+
+
 
 
 - (id)initWithStyle:(UITableViewCellStyle)style reuseIdentifier:(NSString *)reuseIdentifier height:(CGFloat)height;
@@ -21,8 +31,9 @@
 - (void)setIsFile:(BOOL)isFile withDesc:(NSString*)desc;
 // 照片
 - (void)setPhotoWithImage:(UIImage*)image;
-// 右上角描述
-- (void)setDescLabelWithText:(NSString*)text withBackGroubdColor:(UIColor*)color;
+
+// 字节数
+-(void)setSizeWithCurrentSize:(int64_t)currentSize withTotalSize:(int64_t)totalSize;
 
 -(void)clearMark;
 // 蓝色标记
@@ -35,6 +46,6 @@
 
 @property (assign, nonatomic) CGFloat          height;
 
-@property (copy, nonatomic) NSString           *localPath;
+@property (assign, nonatomic) DownloadState    downloadState;
 
 @end

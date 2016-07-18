@@ -14,7 +14,7 @@
 #import "Common.h"
 #import "FileViewController.h"
 #import <QuickLook/QuickLook.h>
-#import "CachedFileItem.h"
+#import "DownloadFileItem.h"
 #import "KxSMBProvider.h"
 #import "CellMenuItem.h"
 #import "NSString+Hashing.h"
@@ -44,6 +44,7 @@
     return self;
 }
 
+#pragma mark - delegate for KxSMBProviderDelegate
 - (KxSMBAuth *) smbRequestAuthServer:(NSString *)server
                                share:(NSString *)share
                            workgroup:(NSString *)workgroup
@@ -52,13 +53,14 @@
     if ([share isEqualToString:@"IPC$"] ||
         [share hasSuffix:@"$"])
     {
-        // return nil;
+//         return nil;
     }
     
     NSLog(@"ask auth for %@/%@ (%@)", server, share, workgroup);
     
     return nil;
 }
+
 
 -(void)accessWithPath:(NSString*)path
              withAuth:(KxSMBAuth*)auth
@@ -269,20 +271,20 @@
             
             
             NSString *key = [file.path MD5Hash];
-            CachedFileItem *casedFileItem = [[Database sharedDatabase] getCachedFileWithKey:key];
+            DownloadFileItem *downloadFileItem = [[Database sharedDatabase] getDownloadFileWithKey:key];
             
-            if(nil != casedFileItem)
+            if(nil != downloadFileItem)
             {
-                NSString *second = [NSString stringWithFormat:@"已下载:%@/%@", @(casedFileItem.size), @(file.stat.size)];
+                NSString *second = [NSString stringWithFormat:@"已下载:%@/%@", @(downloadFileItem.currentSize), @(downloadFileItem.totalSize)];
                 [cell setSecondLabelWithText:second];
                 
-                if(casedFileItem.size == file.stat.size)
+                if(downloadFileItem.currentSize == downloadFileItem.totalSize)
                 {
                     NSString *documentsFolder = [NSSearchPathForDirectoriesInDomains(NSDocumentDirectory,
                                                                                      NSUserDomainMask,
                                                                                      YES) lastObject];
                     
-                    cell.localPath = [NSString stringWithFormat:@"%@/%@", documentsFolder, casedFileItem.localPath];
+                    cell.localPath = [NSString stringWithFormat:@"%@/%@", documentsFolder, downloadFileItem.localPath];
                     
                     [cell setBlueMark];
                 }
@@ -410,11 +412,34 @@
     // 2. 下载, 只有文件可以下载
     if ([item isKindOfClass:[KxSMBItemFile class]])
     {
-        UIAlertAction *downloadAction = [UIAlertAction actionWithTitle:@"下载"
-                                                                 style:UIAlertActionStyleDestructive
-                                                               handler:^(UIAlertAction *action) {
-                                                                   NSLog(@"选择了下载:%@", item.path);
-                                                               }];
+        UIAlertAction *downloadAction = nil;
+        
+        DownloadFileItem *downloadFileItem = [[Database sharedDatabase] getDownloadFileWithKey:[item.path MD5Hash]];
+        if(nil != downloadFileItem)
+        {
+            if (downloadFileItem.currentSize < downloadFileItem.totalSize) {
+                downloadAction = [UIAlertAction actionWithTitle:@"下载中"
+                                                          style:UIAlertActionStyleDestructive
+                                                        handler:nil];
+            } else {
+                downloadAction = [UIAlertAction actionWithTitle:@"已下载"
+                                                          style:UIAlertActionStyleDestructive
+                                                        handler:nil];
+            }
+            downloadAction.enabled = NO;
+        } else {
+            downloadAction = [UIAlertAction actionWithTitle:@"下载"
+                                                      style:UIAlertActionStyleDestructive
+                                                    handler:^(UIAlertAction *action) {
+                                                        NSLog(@"选择了下载:%@", item.path);
+                                                        
+                                                        [[Database sharedDatabase] addDownloadFileWithKey:[item.path MD5Hash]
+                                                                                                 withUser:self.auth.username  withPassword:self.auth.password
+                                                                                           withRemotePath:item.path
+                                                                                            withTotalSize:item.stat.size];
+                                                    }];
+        }
+        
         [alertController addAction:downloadAction];
 
     }

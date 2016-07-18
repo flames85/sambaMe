@@ -1,5 +1,5 @@
 //
-//  MeCachedFileVC.h
+//  MeDownloadFileVC.h
 //  sambaMe
 //
 //  Created by Shao.Admin on 16/7/14.
@@ -8,7 +8,9 @@
 
 #import <UIKit/UIKit.h>
 
-@interface MeCachedFileVC : UIViewController
+@class DownloadingItem;
+
+@interface MeDownloadFileVC : UIViewController
 
 -(id) init;
 
