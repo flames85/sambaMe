@@ -329,29 +329,44 @@
         case STATE_DOWNLOADING:
             self.progressView.borderWidth = 2.0;
             self.progressView.lineWidth = 4.0;
+<<<<<<< HEAD
             
             [self.stopDownloadView setHidden:NO];
             [self.downloadedImageView setHidden:YES];
             self.progressView.tintColor = [CommonTool skyBlueColor];
             NSLog(@"状态下载中");
+=======
+            self.progressView.tintColor = [CommonTool skyBlueColor];
+            NSLog(@"下载中");
+>>>>>>> adf413bcc08e08eae2e0e9250117354e8a3cce4b
             break;
         case STATE_DOWNLOADED:
             self.progressView.borderWidth = 2.0;
             self.progressView.lineWidth = 8.0;
+<<<<<<< HEAD
             
             [self.stopDownloadView setHidden:YES];
             [self.downloadedImageView setHidden:NO];
             self.progressView.tintColor = [CommonTool skyBlueColor];
             NSLog(@"状态已下载");
+=======
+            [self.stopDownloadView setHidden:YES];
+            [self.downloadedImageView setHidden:NO];
+>>>>>>> adf413bcc08e08eae2e0e9250117354e8a3cce4b
             break;
         case STATE_STOPED:
             self.progressView.borderWidth = 2.0;
             self.progressView.lineWidth = 4.0;
+<<<<<<< HEAD
             
             [self.stopDownloadView setHidden:NO];
             [self.downloadedImageView setHidden:YES];
             self.progressView.tintColor = [UIColor redColor];
             NSLog(@"状态停止");
+=======
+            self.progressView.tintColor = [UIColor redColor];
+            NSLog(@"停止了下载");
+>>>>>>> adf413bcc08e08eae2e0e9250117354e8a3cce4b
             break;
         default:
             break;

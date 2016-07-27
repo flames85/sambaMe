@@ -269,8 +269,11 @@
 		E45A244F1D37178200DCF424 /* ThirdParty */ = {
 			isa = PBXGroup;
 			children = (
+<<<<<<< HEAD
 				E4B80D141D3F09340013E51A /* VLC */,
 				E4B809301D3F00D50013E51A /* MobileVLCKit */,
+=======
+>>>>>>> adf413bcc08e08eae2e0e9250117354e8a3cce4b
 				E43B0D961D3A6397001CC26F /* UAProgressView */,
 				E43B0D861D3994B8001CC26F /* Hash */,
 				E45A24501D37178200DCF424 /* FMDB */,
@@ -579,7 +582,10 @@
 				E45A247D1D371C0A00DCF424 /* HostItem.m in Sources */,
 				E45A246E1D3717AD00DCF424 /* FMDatabaseQueue.m in Sources */,
 				E43B0D9C1D3AF136001CC26F /* PlayView.m in Sources */,
+<<<<<<< HEAD
 				E4B80E5D1D3F36B10013E51A /* NSString+SupportedMedia.mm in Sources */,
+=======
+>>>>>>> adf413bcc08e08eae2e0e9250117354e8a3cce4b
 				E4F9AEC51D34D630000A1D11 /* MeHomeVC.m in Sources */,
 				E45A24901D37883800DCF424 /* DownloadFileItem.m in Sources */,
 				E45A24841D37345300DCF424 /* CommonTool.m in Sources */,

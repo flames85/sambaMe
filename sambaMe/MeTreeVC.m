@@ -21,8 +21,12 @@
 #import "MeTabBarController.h"
 #import "MeDownloadFileVC.h"
 
+<<<<<<< HEAD
 
 @interface MeTreeVC () <UIActionSheetDelegate,KxSMBProviderDelegate,UITableViewDelegate,UITableViewDataSource,QLPreviewControllerDelegate, QLPreviewControllerDataSource> {
+=======
+@interface MeTreeVC () <UIActionSheetDelegate,FileViewControllerDelegate,KxSMBProviderDelegate,UITableViewDelegate,UITableViewDataSource,QLPreviewControllerDelegate, QLPreviewControllerDataSource> {
+>>>>>>> adf413bcc08e08eae2e0e9250117354e8a3cce4b
 }
 
 @end
@@ -45,6 +49,7 @@
     return self;
 }
 
+<<<<<<< HEAD
 
 -(void)loginFailAlert:(NSString*)errorDesc {
     // 提示连接失败
@@ -59,6 +64,8 @@
     [self presentViewController:alertController animated:YES completion:nil];
 }
 
+=======
+>>>>>>> adf413bcc08e08eae2e0e9250117354e8a3cce4b
 #pragma mark - delegate for KxSMBProviderDelegate
 - (KxSMBAuth *) smbRequestAuthServer:(NSString *)server
                                share:(NSString *)share
@@ -294,7 +301,12 @@
             
             if(nil != downloadFileItem)
             {
+<<<<<<< HEAD
                 NSString *second = nil;
+=======
+                NSString *second = [NSString stringWithFormat:@"已下载:%@/%@", @(downloadFileItem.currentSize), @(downloadFileItem.totalSize)];
+                [cell setSecondLabelWithText:second];
+>>>>>>> adf413bcc08e08eae2e0e9250117354e8a3cce4b
                 
                 if(downloadFileItem.currentSize == downloadFileItem.totalSize)
                 {
@@ -303,8 +315,11 @@
                                                                                      YES) lastObject];
                     
                     cell.localPath = [NSString stringWithFormat:@"%@/%@", documentsFolder, downloadFileItem.localPath];
+<<<<<<< HEAD
                     
                     second = [NSString stringWithFormat:@"已下载:%@/%@", @(downloadFileItem.currentSize), @(downloadFileItem.totalSize)];
+=======
+>>>>>>> adf413bcc08e08eae2e0e9250117354e8a3cce4b
                     
                     [cell setBlueMark];
                 } else {
@@ -424,12 +439,21 @@
     [tableView deselectRowAtIndexPath:indexPath animated:YES];
     
     KxSMBItem *item = _items[indexPath.row];
+<<<<<<< HEAD
     
     // 底部的action sheet
     UIAlertController *alertController = [UIAlertController alertControllerWithTitle:@"操作"
                                                                              message:@"请选择"
                                                                       preferredStyle:UIAlertControllerStyleActionSheet];
     
+=======
+    
+    // 底部的action sheet
+    UIAlertController *alertController = [UIAlertController alertControllerWithTitle:@"操作"
+                                                                             message:@"请选择"
+                                                                      preferredStyle:UIAlertControllerStyleActionSheet];
+    
+>>>>>>> adf413bcc08e08eae2e0e9250117354e8a3cce4b
     // 1. 取消
     UIAlertAction *cancelAction = [UIAlertAction actionWithTitle:@"取消" style:UIAlertActionStyleCancel handler:^(UIAlertAction *action) {
         NSLog(@"选择取消");
@@ -465,6 +489,7 @@
                                                                                                  withUser:self.auth.username  withPassword:self.auth.password
                                                                                            withRemotePath:item.path
                                                                                             withTotalSize:item.stat.size];
+<<<<<<< HEAD
                                                         
                                                         // 更新cell
                                                         [_tableView reloadRowsAtIndexPaths:[NSArray arrayWithObject:[NSIndexPath indexPathForRow:indexPath.row inSection:0]] withRowAnimation:UITableViewRowAnimationNone];
@@ -478,6 +503,8 @@
                                                         addItem.totalSize = item.stat.size;
                                                         [[MeTabBarController sharedTabBar].downloadVC addDownloadFileItem:addItem];
                                                         
+=======
+>>>>>>> adf413bcc08e08eae2e0e9250117354e8a3cce4b
                                                     }];
         }
         
@@ -630,6 +657,8 @@
 {
     return [NSURL fileURLWithPath:_previewfileLocalPath];
 }
+
+
 
 
 @end

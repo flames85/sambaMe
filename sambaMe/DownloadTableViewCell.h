@@ -33,9 +33,15 @@ typedef NS_ENUM(NSInteger, DownloadState) {
 - (void)setPhotoWithImage:(UIImage*)image;
 
 // 字节数
+<<<<<<< HEAD
 - (void)setSizeWithCurrentSize:(int64_t)currentSize withTotalSize:(int64_t)totalSize;
 
 - (void)clearMark;
+=======
+-(void)setSizeWithCurrentSize:(int64_t)currentSize withTotalSize:(int64_t)totalSize;
+
+-(void)clearMark;
+>>>>>>> adf413bcc08e08eae2e0e9250117354e8a3cce4b
 // 蓝色标记
 - (void)setBlueMark;
 // 红色标记
