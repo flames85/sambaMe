@@ -10,7 +10,7 @@
 
 #import "FMDatabase.h"
 #import "HostItem.h"
-#import "CachedFileItem.h"
+#import "DownloadFileItem.h"
 #import "FavoriteItem.h"
 
 static Database *gl_database = nil;
@@ -39,7 +39,7 @@ static Database *gl_database = nil;
         if([_fmdb open])
         {
             [self createHostTable];
-            [self createCachedFileTable];
+            [self createDownloadFileTable];
             [self createFavoriteTable];
         }
     }
@@ -95,25 +95,28 @@ static Database *gl_database = nil;
         NSLog(@"(db)create tb_host if not exists 失败：%@",[_fmdb lastErrorMessage]);
     }
 }
--(void)createCachedFileTable
+-(void)createDownloadFileTable
 {
-    NSString *sql = @"create table if not exists tb_cachedfile("
+    NSString *sql = @"create table if not exists tb_downloadfile("
     @"key TEXT(1024) PRIMARY KEY NOT NULL,"
     @"localpath TEXT(1024),"
     @"remotepath TEXT(1024),"
-    @"size LONG LONG INT DEFAULT 0,"
-    @"readmark INT DEFAULT 0"
+    @"user TEXT(1024),"
+    @"password TEXT(1024),"
+    @"currentsize LONG LONG INT DEFAULT 0,"
+    @"totalsize LONG LONG INT DEFAULT 0,"
+    @"readmark INT DEFAULT 1"
     @")";
     
     // 执行sql语句，创建表，增，删，改都用这个方法
     if([_fmdb executeUpdate:sql])
     {
-        NSLog(@"(db)create tb_cachedfile if not exists 成功");
+        NSLog(@"(db)create tb_downloadfile if not exists 成功");
         
     }
     else
     {
-        NSLog(@"(db)create tb_cachedfile if not exists 失败：%@",[_fmdb lastErrorMessage]);
+        NSLog(@"(db)create tb_downloadfile if not exists 失败：%@",[_fmdb lastErrorMessage]);
     }
 }
 -(void)createFavoriteTable {
@@ -163,7 +166,7 @@ static Database *gl_database = nil;
     while([ret next])
     {
         HostItem *item = [[HostItem alloc] init];
-        item.sequence = [[ret stringForColumn:@"sequence"] intValue];
+        item.sequence = [[ret stringForColumn:@"sequence"] integerValue];
         item.host = [ret stringForColumn:@"host"];
         item.user = [ret stringForColumn:@"user"];
         item.password = [ret stringForColumn:@"password"];
@@ -222,8 +225,8 @@ static Database *gl_database = nil;
 
 /////////////////////////////////////////////////
 
--(NSMutableArray*)getAllCachedFile {
-    NSString *sql = [NSString stringWithFormat:@"SELECT * FROM tb_cachedfile"];
+-(NSMutableArray*)getAllDownloadFile {
+    NSString *sql = [NSString stringWithFormat:@"SELECT * FROM tb_downloadfile"];
     
     NSMutableArray *itemArray = [[NSMutableArray alloc ] init];
     // 执行查询
@@ -231,52 +234,77 @@ static Database *gl_database = nil;
     
     while([ret next])
     {
-        CachedFileItem *item = [[CachedFileItem alloc] init];
+        DownloadFileItem *item = [[DownloadFileItem alloc] init];
         item.key = [ret stringForColumn:@"key"];
         item.localPath = [ret stringForColumn:@"localpath"];
         item.remotePath = [ret stringForColumn:@"remotepath"];
-        item.size = [[ret stringForColumn:@"size"] integerValue];
+        item.currentSize = [[ret stringForColumn:@"currentsize"] longLongValue];
+        item.totalSize = [[ret stringForColumn:@"totalsize"] longLongValue];
         item.readMark = [[ret stringForColumn:@"readmark"] boolValue];
+        item.user = [ret stringForColumn:@"user"];
+        item.password = [ret stringForColumn:@"password"];
+        
         [itemArray addObject:item];
     }
     return itemArray;
 }
 
--(BOOL)addCachedFileWithItem:(CachedFileItem*)item {
-    NSString *sql = [NSString stringWithFormat:@"INSERT INTO tb_cachedfile(key,localpath,remotepath,size,readmark)"
-                     @"values(?,?,?,?,?)"];
+
+-(BOOL)addDownloadFileWithKey:(NSString*)key
+                     withUser:(NSString*)user
+                 withPassword:(NSString*)password
+               withRemotePath:(NSString*)remotePath
+                withTotalSize:(int64_t)totalSize {
+    NSString *sql = @"INSERT INTO tb_downloadfile(remotepath, totalsize, user, password, key) values(?,?,?,?,?)";
     
-    if(![_fmdb executeUpdate:sql, item.key, item.localPath, item.remotePath, @(item.size), @(item.readMark)])
+    if(![_fmdb executeUpdate:sql, remotePath, @(totalSize), user,password, key])
     {
-        NSLog(@"(db)插入失败：%@", [_fmdb lastErrorMessage]);
+        NSLog(@"(db)更新失败：%@", [_fmdb lastErrorMessage]);
         return NO;
     }
-    NSLog(@"(db)插入成功");
+    NSLog(@"(db)更新成功");
     return YES;
 }
--(CachedFileItem*)getCachedFileWithKey:(NSString*)key {
-    NSString *sql = [NSString stringWithFormat:@"SELECT * FROM tb_cachedfile where key=(?)"];
+
+-(BOOL)updateDownloadFileWithKey:(NSString*)key withItem:(DownloadFileItem*)item {
+    NSString *sql = @"UPDATE tb_downloadfile SET localpath=(?),remotepath=(?),currentsize=(?),totalsize=(?),readmark=(?),user=(?),password=(?) WHERE key=(?)";
+    
+    if(![_fmdb executeUpdate:sql, item.localPath, item.remotePath, @(item.currentSize), @(item.totalSize), @(item.readMark), item.user, item.password, item.key])
+    {
+        NSLog(@"(db)更新失败：%@", [_fmdb lastErrorMessage]);
+        return NO;
+    }
+    NSLog(@"(db)更新成功");
+    return YES;
+}
+
+-(DownloadFileItem*)getDownloadFileWithKey:(NSString*)key {
+    NSString *sql = [NSString stringWithFormat:@"SELECT * FROM tb_downloadfile where key=(?)"];
     
     // 执行查询
     FMResultSet *ret = [_fmdb executeQuery:sql, key];
-    CachedFileItem *item = nil;
+    DownloadFileItem *item = nil;
     if([ret next])
     {
-        item = [[CachedFileItem alloc] init];
+        item = [[DownloadFileItem alloc] init];
         item.key = [ret stringForColumn:@"key"];
         item.localPath = [ret stringForColumn:@"localpath"];
         item.remotePath = [ret stringForColumn:@"remotepath"];
         
-        item.size = [[ret stringForColumn:@"size"] integerValue];
+        item.currentSize = [[ret stringForColumn:@"currentsize"] longLongValue];
+        item.totalSize = [[ret stringForColumn:@"totalsize"] longLongValue];
         
         item.readMark = [[ret stringForColumn:@"readmark"] boolValue];
+        
+        item.user = [ret stringForColumn:@"user"];
+        item.password = [ret stringForColumn:@"password"];
     }
     return item;
     
 }
--(BOOL)delCachedFileWithKey:(NSString*)key {
+-(BOOL)delDownloadFileWithKey:(NSString*)key {
     
-    NSString *sql = [NSString stringWithFormat:@"DELETE FROM tb_cachedfile WHERE key=(?)"];
+    NSString *sql = [NSString stringWithFormat:@"DELETE FROM tb_downloadfile WHERE key=(?)"];
     
     // 执行查询
     if(![_fmdb executeUpdate:sql, key])
@@ -289,6 +317,8 @@ static Database *gl_database = nil;
 }
 
 
+////
+
 -(NSMutableArray*)getAllFavorite {
     NSString *sql = [NSString stringWithFormat:@"SELECT * FROM tb_favorite ORDER BY sequence DESC"];
     
@@ -299,7 +329,7 @@ static Database *gl_database = nil;
     while([ret next])
     {
         FavoriteItem *item = [[FavoriteItem alloc] init];
-        item.sequence = [[ret stringForColumn:@"sequence"] longLongValue];
+        item.sequence = [[ret stringForColumn:@"sequence"] integerValue];
         item.remotePath = [ret stringForColumn:@"remotepath"];
         item.size = [[ret stringForColumn:@"size"] longLongValue];
         item.isFile = [[ret stringForColumn:@"isfile"] boolValue];

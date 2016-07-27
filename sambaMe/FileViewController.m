@@ -36,7 +36,7 @@
 #import "KxSMBProvider.h"
 #import <QuickLook/QuickLook.h>
 #import "Database.h"
-#import "CachedFileItem.h"
+#import "DownloadFileItem.h"
 #import "NSString+Hashing.h"
 
 @interface FileViewController () <QLPreviewControllerDelegate, QLPreviewControllerDataSource>
@@ -311,15 +311,16 @@
                     _downloadButton.enabled = NO;
                     
                     // save md5 key
-                    CachedFileItem *item = [[CachedFileItem alloc] init];
+                    DownloadFileItem *item = [[DownloadFileItem alloc] init];
                     item.key = [_smbFile.path MD5Hash];
                     // 拼上相对本地路径
                     item.localPath = [NSString stringWithFormat:@"%@/%@", item.key, _smbFile.path.lastPathComponent];
                     item.remotePath = _smbFile.path;
-                    item.size = _downloadedBytes;
+                    item.currentSize = _downloadedBytes;
+                    item.totalSize = _smbFile.stat.size;
                     item.readMark = YES;
                     
-                    [[Database sharedDatabase] addCachedFileWithItem:item];
+                    [[Database sharedDatabase] updateDownloadFileWithKey:item.key withItem:item];
                     
                     // 更新这一行
                     [self.delegate updateWithRow:_row];

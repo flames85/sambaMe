@@ -12,21 +12,22 @@
 #import "CommonTool.h"
 #import "FileTableViewCell.h"
 #import "Common.h"
-#import "FileViewController.h"
 #import <QuickLook/QuickLook.h>
-#import "CachedFileItem.h"
+#import "DownloadFileItem.h"
 #import "KxSMBProvider.h"
 #import "CellMenuItem.h"
 #import "NSString+Hashing.h"
 #import "FavoriteItem.h"
+#import "MeTabBarController.h"
+#import "MeDownloadFileVC.h"
 
-@interface MeTreeVC () <FileViewControllerDelegate,KxSMBProviderDelegate,UITableViewDelegate,UITableViewDataSource,QLPreviewControllerDelegate, QLPreviewControllerDataSource> {
+
+@interface MeTreeVC () <UIActionSheetDelegate,KxSMBProviderDelegate,UITableViewDelegate,UITableViewDataSource,QLPreviewControllerDelegate, QLPreviewControllerDataSource> {
 }
 
 @end
 
 @implementation MeTreeVC {
-    
     
     UITableView     *_tableView;
     KxSMBProvider   *_provider;
@@ -44,6 +45,21 @@
     return self;
 }
 
+
+-(void)loginFailAlert:(NSString*)errorDesc {
+    // 提示连接失败
+    UIAlertController *alertController = [UIAlertController alertControllerWithTitle:@"连接失败" message:errorDesc preferredStyle:UIAlertControllerStyleAlert];
+    
+    UIAlertAction *okAction = [UIAlertAction actionWithTitle:@"好的" style:UIAlertActionStyleDefault handler:^(UIAlertAction *action) {
+        // 点击后退出
+        [self.navigationController popViewControllerAnimated:YES];
+    }];
+    [alertController addAction:okAction];
+    // 显示alert
+    [self presentViewController:alertController animated:YES completion:nil];
+}
+
+#pragma mark - delegate for KxSMBProviderDelegate
 - (KxSMBAuth *) smbRequestAuthServer:(NSString *)server
                                share:(NSString *)share
                            workgroup:(NSString *)workgroup
@@ -52,13 +68,14 @@
     if ([share isEqualToString:@"IPC$"] ||
         [share hasSuffix:@"$"])
     {
-        // return nil;
+//         return nil;
     }
     
     NSLog(@"ask auth for %@/%@ (%@)", server, share, workgroup);
     
     return nil;
 }
+
 
 -(void)accessWithPath:(NSString*)path
              withAuth:(KxSMBAuth*)auth
@@ -72,7 +89,8 @@
                      block:^(id result)
      {
          if ([result isKindOfClass:[NSError class]]) {
-             NSLog(@"fail:%@", ((NSError *)result).localizedDescription);
+            NSLog(@"fail:%@", ((NSError *)result).localizedDescription);
+             
          } else {
              if ([result isKindOfClass:[NSArray class]]) {
                  _items = [result copy];
@@ -97,7 +115,9 @@
      {
          if ([result isKindOfClass:[NSError class]]) {
              NSLog(@"fail:%@", ((NSError *)result).localizedDescription);
-             [self.navigationController popViewControllerAnimated:YES];
+             
+             [self loginFailAlert:((NSError *)result).localizedDescription];
+             
          } else {
              
              HostItem *item = [[HostItem alloc] init];
@@ -142,7 +162,8 @@
              NSLog(@"fail:%@", ((NSError *)result).localizedDescription);
              // 更新状态
              [[Database sharedDatabase] updateHostStateWithSequence:sequence withState:NO withDesc:desc];
-             [self.navigationController popViewControllerAnimated:YES];
+             
+             [self loginFailAlert:((NSError *)result).localizedDescription];
              
          } else {
              if ([result isKindOfClass:[NSArray class]]) {
@@ -269,23 +290,32 @@
             
             
             NSString *key = [file.path MD5Hash];
-            CachedFileItem *casedFileItem = [[Database sharedDatabase] getCachedFileWithKey:key];
+            DownloadFileItem *downloadFileItem = [[Database sharedDatabase] getDownloadFileWithKey:key];
             
-            if(nil != casedFileItem)
+            if(nil != downloadFileItem)
             {
-                NSString *second = [NSString stringWithFormat:@"已下载:%@/%@", @(casedFileItem.size), @(file.stat.size)];
-                [cell setSecondLabelWithText:second];
+                NSString *second = nil;
                 
-                if(casedFileItem.size == file.stat.size)
+                if(downloadFileItem.currentSize == downloadFileItem.totalSize)
                 {
                     NSString *documentsFolder = [NSSearchPathForDirectoriesInDomains(NSDocumentDirectory,
                                                                                      NSUserDomainMask,
                                                                                      YES) lastObject];
                     
-                    cell.localPath = [NSString stringWithFormat:@"%@/%@", documentsFolder, casedFileItem.localPath];
+                    cell.localPath = [NSString stringWithFormat:@"%@/%@", documentsFolder, downloadFileItem.localPath];
+                    
+                    second = [NSString stringWithFormat:@"已下载:%@/%@", @(downloadFileItem.currentSize), @(downloadFileItem.totalSize)];
                     
                     [cell setBlueMark];
+                } else {
+                    
+                    second = [NSString stringWithFormat:@"下载中"];
+                    
+                    [cell setRedMark];
                 }
+                
+                [cell setSecondLabelWithText:second];
+                
             } else {
                 // 必须清除以下信息, 因为从缓存中获取的cell可能已经含有
                 [cell setSecondLabelWithText:nil];
@@ -350,15 +380,12 @@
         CellMenuItem *itCopyPath = [[CellMenuItem alloc] initWithTitle:@"复制路径" action:@selector(handleCopyPath:)];
         itCopyPath.indexPath = indexPath;
         
-        CellMenuItem *itRename = [[CellMenuItem alloc] initWithTitle:@"重命名" action:@selector(handleRename:)];
-        itRename.indexPath = indexPath;
-        
-        CellMenuItem *itFavorite = [[CellMenuItem alloc] initWithTitle:@"收藏" action:@selector(handleFavorite:)];
+        CellMenuItem *itFavorite = [[CellMenuItem alloc] initWithTitle:@"查看" action:@selector(handleDetails:)];
         itFavorite.indexPath = indexPath;
         
         
         UIMenuController *menu = [UIMenuController sharedMenuController];
-        [menu setMenuItems:[NSArray arrayWithObjects:itCopyPath, itRename, itFavorite, nil]];
+        [menu setMenuItems:[NSArray arrayWithObjects:itCopyPath, itFavorite, nil]];
         [menu setTargetRect:cell.frame inView:_tableView];
         [menu setMenuVisible:YES animated:YES];        
     }
@@ -369,89 +396,163 @@
     UIMenuController *targetSender = (UIMenuController *)sender ;
     CellMenuItem *menuItem = (CellMenuItem *)targetSender.menuItems[0];
     
-    
     KxSMBItem *item = _items[menuItem.indexPath.row];
     
     UIPasteboard *pasteboard = [UIPasteboard generalPasteboard];
     pasteboard.string = item.path;
     
     NSLog(@"handle copy path: %@:%@", @(menuItem.indexPath.row), item.path);
-    
 }
 
-- (void)handleRename:(id)sender {
-    
+- (void)handleDetails:(id)sender {
+    NSLog(@"handle detail ");
     UIMenuController *targetSender = (UIMenuController *)sender ;
-    CellMenuItem *menuItem = (CellMenuItem *)targetSender.menuItems[1];
-    NSLog(@"%@", @(menuItem.indexPath.row));
-    
+    CellMenuItem *menuItem = (CellMenuItem *)targetSender.menuItems[0];
     KxSMBItem *item = _items[menuItem.indexPath.row];
-    
-    NSLog(@"handle rename cell:%@:%@", @(menuItem.indexPath.row), item.path);
-    
-    UIAlertController *alertController = [UIAlertController alertControllerWithTitle:@"输入信息" message:@"请输入新文件名" preferredStyle:UIAlertControllerStyleAlert];
-    
-    // action
-    UIAlertAction *cancelAction = [UIAlertAction actionWithTitle:@"取消" style:UIAlertActionStyleCancel handler:nil];
-    UIAlertAction *okAction = [UIAlertAction actionWithTitle:@"好的" style:UIAlertActionStyleDefault handler:^(UIAlertAction *action) {
-        NSString *newPath = alertController.textFields[0].text;
-        NSLog(@"rename [%@] to [%@]", item.path, newPath);
-        
-        [_provider renameAtPath:item.path
-                        newPath:newPath
-                           auth:self.auth
-                          block:^(id  _Nullable result) {
-                              if ([result isKindOfClass:[NSError class]]) {
-                                  NSLog(@"fail:%@", ((NSError *)result).localizedDescription);
-                              } else {
-                                  NSLog(@"rename ok");
-                                  [self accessWithPath:self.path withAuth:self.auth];
-                              }
-                          }];
-    }];
-    
-    // textfiled
-    [alertController addTextFieldWithConfigurationHandler:^(UITextField *textField){
-        textField.placeholder = @"新文件名";
-        textField.text = item.path;
-    }];
-    
-    
-    [alertController addAction:cancelAction];
-    [alertController addAction:okAction];
-    
-    [self presentViewController:alertController animated:YES completion:nil];
+    NSLog(@"see detail path: %@:%@", @(menuItem.indexPath.row), item.path);
 }
-
-- (void)handleFavorite:(id)sender {
-    NSLog(@"handle copy path");
-    UIMenuController *targetSender = (UIMenuController *)sender ;
-    CellMenuItem *menuItem = (CellMenuItem *)targetSender.menuItems[2];
-    
-    NSLog(@"%@", @(menuItem.indexPath.row));
-    KxSMBItem *item = _items[menuItem.indexPath.row];
-    
-    // save favorite
-    FavoriteItem *favoriteItem = [[FavoriteItem alloc] init];
-    favoriteItem.remotePath = item.path;
-    favoriteItem.size = item.stat.size;
-    
-    if ([item isKindOfClass:[KxSMBItemTree class]]) {
-        favoriteItem.isFile = NO;
-    } else if ([item isKindOfClass:[KxSMBItemFile class]]) {
-        favoriteItem.isFile = YES;
-    }
-    
-    favoriteItem.user = self.auth.username;
-    favoriteItem.password = self.auth.password;
-    [[Database sharedDatabase] addFavoriteWithItem:favoriteItem];
-}
-
 
 #pragma mark - delegate UITableViewDataSource 删除操作的返回字符
 -(NSString*)tableView:(UITableView *)tableView titleForDeleteConfirmationButtonForRowAtIndexPath:(NSIndexPath *)indexPath
 {
     return @"删除";
+}
+
+#pragma mark - delegate UITableViewDelegate 点击accessory
+- (void)tableView:(UITableView *)tableView accessoryButtonTappedForRowWithIndexPath:(NSIndexPath *)indexPath
+{
+    [tableView deselectRowAtIndexPath:indexPath animated:YES];
+    
+    KxSMBItem *item = _items[indexPath.row];
+    
+    // 底部的action sheet
+    UIAlertController *alertController = [UIAlertController alertControllerWithTitle:@"操作"
+                                                                             message:@"请选择"
+                                                                      preferredStyle:UIAlertControllerStyleActionSheet];
+    
+    // 1. 取消
+    UIAlertAction *cancelAction = [UIAlertAction actionWithTitle:@"取消" style:UIAlertActionStyleCancel handler:^(UIAlertAction *action) {
+        NSLog(@"选择取消");
+    }];
+    
+    [alertController addAction:cancelAction];
+    
+    // 2. 下载, 只有文件可以下载
+    if ([item isKindOfClass:[KxSMBItemFile class]])
+    {
+        UIAlertAction *downloadAction = nil;
+        
+        DownloadFileItem *downloadFileItem = [[Database sharedDatabase] getDownloadFileWithKey:[item.path MD5Hash]];
+        if(nil != downloadFileItem)
+        {
+            if (downloadFileItem.currentSize < downloadFileItem.totalSize) {
+                downloadAction = [UIAlertAction actionWithTitle:@"下载中"
+                                                          style:UIAlertActionStyleDestructive
+                                                        handler:nil];
+            } else {
+                downloadAction = [UIAlertAction actionWithTitle:@"已下载"
+                                                          style:UIAlertActionStyleDestructive
+                                                        handler:nil];
+            }
+            downloadAction.enabled = NO;
+        } else {
+            downloadAction = [UIAlertAction actionWithTitle:@"下载"
+                                                      style:UIAlertActionStyleDestructive
+                                                    handler:^(UIAlertAction *action) {
+                                                        NSLog(@"选择了下载:%@", item.path);
+                                                        
+                                                        [[Database sharedDatabase] addDownloadFileWithKey:[item.path MD5Hash]
+                                                                                                 withUser:self.auth.username  withPassword:self.auth.password
+                                                                                           withRemotePath:item.path
+                                                                                            withTotalSize:item.stat.size];
+                                                        
+                                                        // 更新cell
+                                                        [_tableView reloadRowsAtIndexPaths:[NSArray arrayWithObject:[NSIndexPath indexPathForRow:indexPath.row inSection:0]] withRowAnimation:UITableViewRowAnimationNone];
+                                                        
+                                                        // 添加到下载
+                                                        DownloadFileItem *addItem = [[DownloadFileItem alloc] init];
+                                                        addItem.key = [item.path MD5Hash];
+                                                        addItem.user = self.auth.username;
+                                                        addItem.password = self.auth.password;
+                                                        addItem.remotePath = item.path;
+                                                        addItem.totalSize = item.stat.size;
+                                                        [[MeTabBarController sharedTabBar].downloadVC addDownloadFileItem:addItem];
+                                                        
+                                                    }];
+        }
+        
+        [alertController addAction:downloadAction];
+
+    }
+
+    // 3. 修改名称
+    UIAlertAction *renameAction = [UIAlertAction actionWithTitle:@"修改名称"
+                                                           style:UIAlertActionStyleDefault
+                                                         handler:^(UIAlertAction *action) {
+        NSLog(@"选择了修改名称:%@", item.path);
+        
+        UIAlertController *alertController = [UIAlertController alertControllerWithTitle:@"输入信息" message:@"请输入新文件名" preferredStyle:UIAlertControllerStyleAlert];
+        
+        // action
+        UIAlertAction *cancelAction = [UIAlertAction actionWithTitle:@"取消" style:UIAlertActionStyleCancel handler:nil];
+        UIAlertAction *okAction = [UIAlertAction actionWithTitle:@"好的" style:UIAlertActionStyleDefault handler:^(UIAlertAction *action) {
+            NSString *newPath = alertController.textFields[0].text;
+            NSLog(@"rename [%@] to [%@]", item.path, newPath);
+            
+            [_provider renameAtPath:item.path
+                            newPath:newPath
+                               auth:self.auth
+                              block:^(id  _Nullable result) {
+                                  if ([result isKindOfClass:[NSError class]]) {
+                                      NSLog(@"fail:%@", ((NSError *)result).localizedDescription);
+                                  } else {
+                                      NSLog(@"rename ok");
+                                      [self accessWithPath:self.path withAuth:self.auth];
+                                  }
+                              }];
+        }];
+        
+        [alertController addTextFieldWithConfigurationHandler:^(UITextField *textField){
+            textField.placeholder = @"新文件名";
+            textField.text = item.path;
+        }];
+        
+        [alertController addAction:cancelAction];
+        [alertController addAction:okAction];
+        
+        [self presentViewController:alertController animated:YES completion:nil];
+    }];
+    [alertController addAction:renameAction];
+    
+    // 4. 收藏
+    UIAlertAction *favoriteAction = [UIAlertAction actionWithTitle:@"收藏"
+                                                             style:UIAlertActionStyleDefault
+                                                           handler:^(UIAlertAction *action) {
+                                                               
+                                                               NSLog(@"选择了收藏:%@", item.path);
+                                                               
+                                                               // save favorite
+                                                               FavoriteItem *favoriteItem = [[FavoriteItem alloc] init];
+                                                               favoriteItem.remotePath = item.path;
+                                                               favoriteItem.size = item.stat.size;
+                                                               
+                                                               if ([item isKindOfClass:[KxSMBItemTree class]]) {
+                                                                   favoriteItem.isFile = NO;
+                                                               } else if ([item isKindOfClass:[KxSMBItemFile class]]) {
+                                                                   favoriteItem.isFile = YES;
+                                                               }
+                                                               
+                                                               favoriteItem.user = self.auth.username;
+                                                               favoriteItem.password = self.auth.password;
+                                                               [[Database sharedDatabase] addFavoriteWithItem:favoriteItem];
+                                                               
+                                                               
+                                                           }];
+    [alertController addAction:favoriteAction];
+    
+    
+    [self presentViewController:alertController animated:YES completion:nil];
+    
 }
 
 #pragma mark - delegate UITableViewDataSource 点击cell跳转/选中cell
@@ -488,13 +589,8 @@
                 [self.navigationController pushViewController:vc animated:YES];
                 self.hidesBottomBarWhenPushed = NO;
             }
-        } else { // 载入,下载页面
-            KxSMBItemFile *smbFile = (KxSMBItemFile *)item;
-            FileViewController *vc = [[FileViewController alloc] initWithRow:indexPath.row];
-            vc.smbFile = smbFile;
-            vc.delegate = self;
-            
-            [self.navigationController pushViewController:vc animated:YES];
+        } else {
+            // 没缓存,暂无预览方案
         }
     }
 }
@@ -535,10 +631,5 @@
     return [NSURL fileURLWithPath:_previewfileLocalPath];
 }
 
-#pragma mark - delegate FileViewController
-
--(void)updateWithRow:(NSInteger)row {
-    [_tableView reloadRowsAtIndexPaths:[NSArray arrayWithObject:[NSIndexPath indexPathForRow:row inSection:0]] withRowAnimation:UITableViewRowAnimationNone];
-}
 
 @end

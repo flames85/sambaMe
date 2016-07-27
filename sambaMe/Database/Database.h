@@ -9,7 +9,7 @@
 #import <Foundation/Foundation.h>
 
 @class HostItem;
-@class CachedFileItem;
+@class DownloadFileItem;
 @class FavoriteItem;
 
 @interface Database : NSObject
@@ -25,13 +25,19 @@
 -(BOOL)updateAccessTimeWithSequence:(NSInteger)sequence withTime:(NSString*)time withDesc:desc;
 
 // cached
--(NSMutableArray*)getAllCachedFile;
--(BOOL)addCachedFileWithItem:(CachedFileItem*)item;
--(CachedFileItem*)getCachedFileWithKey:(NSString*)key;
--(BOOL)delCachedFileWithKey:(NSString*)key;
+-(NSMutableArray*)getAllDownloadFile;
+
+-(BOOL)addDownloadFileWithKey:(NSString*)key
+                     withUser:(NSString*)user
+                 withPassword:(NSString*)password
+               withRemotePath:(NSString*)remotePath
+                withTotalSize:(int64_t)totalSize;
+-(BOOL)updateDownloadFileWithKey:(NSString*)key withItem:(DownloadFileItem*)item;
+
+-(DownloadFileItem*)getDownloadFileWithKey:(NSString*)key;
+-(BOOL)delDownloadFileWithKey:(NSString*)key;
 
 // favorite
-
 -(NSMutableArray*)getAllFavorite;
 -(BOOL)addFavoriteWithItem:(FavoriteItem*)item;
 -(BOOL)delFavoriteWithKey:(NSInteger)sequence;

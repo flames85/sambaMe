@@ -10,6 +10,8 @@
 
 @class MeTabBarController;
 
-@interface MeHomeVC : UIViewController 
+@interface MeHomeVC : UIViewController
+
+@property (nonatomic, assign) BOOL  bAuthSuccess;
 
 @end
