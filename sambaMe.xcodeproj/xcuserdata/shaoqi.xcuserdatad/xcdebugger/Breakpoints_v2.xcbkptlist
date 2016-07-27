@@ -602,21 +602,12 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "sambaMe/MeTreeVC.m"
-<<<<<<< HEAD
             timestampString = "491209809.479664"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "577"
             endingLineNumber = "577"
-            landmarkName = "-tableView:didSelectRowAtIndexPath:"
-=======
-            timestampString = "490518645.840081"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "601"
-            endingLineNumber = "601"
-            landmarkName = "-updateWithRow:"
->>>>>>> adf413bcc08e08eae2e0e9250117354e8a3cce4b
+            landmarkName = "-tableView:accessoryButtonTappedForRowWithIndexPath:"
             landmarkType = "5">
          </BreakpointContent>
       </BreakpointProxy>
@@ -627,21 +618,12 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "sambaMe/MeTreeVC.m"
-<<<<<<< HEAD
             timestampString = "491209809.479664"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "371"
             endingLineNumber = "371"
-            landmarkName = "-handleLongPress:"
-=======
-            timestampString = "490518645.840081"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "536"
-            endingLineNumber = "536"
-            landmarkName = "-tableView:didSelectRowAtIndexPath:"
->>>>>>> adf413bcc08e08eae2e0e9250117354e8a3cce4b
+            landmarkName = "-tableView:cellForRowAtIndexPath:"
             landmarkType = "5">
          </BreakpointContent>
       </BreakpointProxy>
@@ -652,21 +634,12 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "sambaMe/MeTreeVC.m"
-<<<<<<< HEAD
             timestampString = "491209809.479664"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "261"
             endingLineNumber = "261"
-            landmarkName = "-tableView:cellForRowAtIndexPath:"
-=======
-            timestampString = "490515295.05098"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "343"
-            endingLineNumber = "343"
-            landmarkName = "-handleLongPress:"
->>>>>>> adf413bcc08e08eae2e0e9250117354e8a3cce4b
+            landmarkName = "-tableView:heightForRowAtIndexPath:"
             landmarkType = "5">
          </BreakpointContent>
       </BreakpointProxy>
@@ -677,47 +650,12 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "sambaMe/MeTreeVC.m"
-<<<<<<< HEAD
             timestampString = "491209809.479664"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "403"
             endingLineNumber = "403"
-            landmarkName = "-handleCopyPath:"
-=======
-            timestampString = "490515295.05098"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "242"
-            endingLineNumber = "242"
-            landmarkName = "-tableView:cellForRowAtIndexPath:"
->>>>>>> adf413bcc08e08eae2e0e9250117354e8a3cce4b
-            landmarkType = "5">
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
-            shouldBeEnabled = "No"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
-<<<<<<< HEAD
-            filePath = "sambaMe/MeCachedFileListVC.m"
-            timestampString = "490312023.627854"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "225"
-            endingLineNumber = "225"
-            landmarkName = "-previewController:previewItemAtIndex:"
-=======
-            filePath = "sambaMe/MeTreeVC.m"
-            timestampString = "490515295.05098"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "375"
-            endingLineNumber = "375"
-            landmarkName = "-handleCopyPath:"
->>>>>>> adf413bcc08e08eae2e0e9250117354e8a3cce4b
+            landmarkName = "-handleLongPress:"
             landmarkType = "5">
          </BreakpointContent>
       </BreakpointProxy>
@@ -731,11 +669,6 @@
             timestampString = "490312023.627854"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-<<<<<<< HEAD
-            startingLineNumber = "216"
-            endingLineNumber = "216"
-            landmarkName = "-numberOfPreviewItemsInPreviewController:"
-=======
             startingLineNumber = "225"
             endingLineNumber = "225"
             landmarkName = "-previewController:previewItemAtIndex:"
@@ -762,24 +695,6 @@
          BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
          <BreakpointContent
             shouldBeEnabled = "No"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
-            filePath = "sambaMe/MeCachedFileListVC.m"
-            timestampString = "490312023.627854"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "223"
-            endingLineNumber = "223"
-            landmarkName = "-previewController:previewItemAtIndex:"
->>>>>>> adf413bcc08e08eae2e0e9250117354e8a3cce4b
-            landmarkType = "5">
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
-            shouldBeEnabled = "No"
-<<<<<<< HEAD
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "sambaMe/MeCachedFileListVC.m"
@@ -804,16 +719,6 @@
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "301"
             endingLineNumber = "301"
-=======
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
-            filePath = "sambaMe/MeTreeVC.m"
-            timestampString = "490515295.05098"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "283"
-            endingLineNumber = "283"
->>>>>>> adf413bcc08e08eae2e0e9250117354e8a3cce4b
             landmarkName = "-tableView:cellForRowAtIndexPath:"
             landmarkType = "5">
          </BreakpointContent>
@@ -825,20 +730,12 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "sambaMe/MeTreeVC.m"
-<<<<<<< HEAD
             timestampString = "491209809.479664"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "563"
             endingLineNumber = "563"
-=======
-            timestampString = "490518645.840081"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "522"
-            endingLineNumber = "522"
->>>>>>> adf413bcc08e08eae2e0e9250117354e8a3cce4b
-            landmarkName = "-tableView:didSelectRowAtIndexPath:"
+            landmarkName = "-tableView:accessoryButtonTappedForRowWithIndexPath:"
             landmarkType = "5">
          </BreakpointContent>
       </BreakpointProxy>
@@ -849,19 +746,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "sambaMe/MeTreeVC.m"
-<<<<<<< HEAD
             timestampString = "491209809.479664"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "333"
             endingLineNumber = "333"
-=======
-            timestampString = "490515295.05098"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "305"
-            endingLineNumber = "305"
->>>>>>> adf413bcc08e08eae2e0e9250117354e8a3cce4b
             landmarkName = "-tableView:cellForRowAtIndexPath:"
             landmarkType = "5">
          </BreakpointContent>
@@ -873,19 +762,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "sambaMe/MeTreeVC.m"
-<<<<<<< HEAD
             timestampString = "491209809.479664"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "336"
             endingLineNumber = "336"
-=======
-            timestampString = "490515295.05098"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "308"
-            endingLineNumber = "308"
->>>>>>> adf413bcc08e08eae2e0e9250117354e8a3cce4b
             landmarkName = "-tableView:cellForRowAtIndexPath:"
             landmarkType = "5">
          </BreakpointContent>
@@ -913,19 +794,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "sambaMe/MeTreeVC.m"
-<<<<<<< HEAD
             timestampString = "491209809.479664"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "293"
             endingLineNumber = "293"
-=======
-            timestampString = "490515295.05098"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "274"
-            endingLineNumber = "274"
->>>>>>> adf413bcc08e08eae2e0e9250117354e8a3cce4b
             landmarkName = "-tableView:cellForRowAtIndexPath:"
             landmarkType = "5">
          </BreakpointContent>
@@ -953,20 +826,12 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "sambaMe/MeTreeVC.m"
-<<<<<<< HEAD
             timestampString = "491209809.479664"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "561"
             endingLineNumber = "561"
-=======
-            timestampString = "490518645.840081"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "520"
-            endingLineNumber = "520"
->>>>>>> adf413bcc08e08eae2e0e9250117354e8a3cce4b
-            landmarkName = "-tableView:didSelectRowAtIndexPath:"
+            landmarkName = "-tableView:accessoryButtonTappedForRowWithIndexPath:"
             landmarkType = "5">
          </BreakpointContent>
       </BreakpointProxy>
@@ -1105,17 +970,13 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "sambaMe/MeDownloadFileVC.m"
-<<<<<<< HEAD
             timestampString = "491211589.85152"
-=======
-            timestampString = "490517754.341359"
->>>>>>> adf413bcc08e08eae2e0e9250117354e8a3cce4b
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "435"
             endingLineNumber = "435"
-            landmarkName = "-tableView:didDeselectRowAtIndexPath:"
-            landmarkType = "5">
+            landmarkName = "@implementation MeDownloadFileVC"
+            landmarkType = "3">
          </BreakpointContent>
       </BreakpointProxy>
       <BreakpointProxy
@@ -1125,123 +986,19 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "sambaMe/MeDownloadFileVC.m"
-<<<<<<< HEAD
             timestampString = "491211589.85152"
-=======
-            timestampString = "490517543.005868"
->>>>>>> adf413bcc08e08eae2e0e9250117354e8a3cce4b
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "335"
             endingLineNumber = "335"
-            landmarkName = "-tableView:cellForRowAtIndexPath:"
-<<<<<<< HEAD
-=======
-            landmarkType = "5">
+            landmarkName = "@implementation MeDownloadFileVC"
+            landmarkType = "3">
          </BreakpointContent>
       </BreakpointProxy>
       <BreakpointProxy
          BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
          <BreakpointContent
             shouldBeEnabled = "No"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
-            filePath = "sambaMe/MeDownloadFileVC.m"
-            timestampString = "490517754.341359"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "394"
-            endingLineNumber = "394"
-            landmarkName = "-tableView:didSelectRowAtIndexPath:"
-            landmarkType = "5">
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
-            shouldBeEnabled = "No"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
-            filePath = "sambaMe/DownloadTableViewCell.m"
-            timestampString = "490517543.005868"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "318"
-            endingLineNumber = "318"
-            landmarkName = "-setSelected:animated:"
-            landmarkType = "5">
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
-            shouldBeEnabled = "No"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
-            filePath = "sambaMe/DownloadTableViewCell.m"
-            timestampString = "490517543.005868"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "301"
-            endingLineNumber = "301"
-            landmarkName = "-setHighlighted:animated:"
-            landmarkType = "5">
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
-            shouldBeEnabled = "No"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
-            filePath = "sambaMe/Database/Database.m"
-            timestampString = "490515584.013508"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "257"
-            endingLineNumber = "257"
-            landmarkName = "-addDownloadFileWithKey:withUser:withPassword:withRemotePath:withTotalSize:"
-            landmarkType = "5">
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
-            shouldBeEnabled = "No"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
-            filePath = "sambaMe/MeDownloadFileVC.m"
-            timestampString = "490517125.715968"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "145"
-            endingLineNumber = "145"
-            landmarkName = "-updateDownloadStatus:withItem:"
-            landmarkType = "5">
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
-            shouldBeEnabled = "No"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
-            filePath = "sambaMe/MeDownloadFileVC.m"
-            timestampString = "490517543.005868"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "284"
-            endingLineNumber = "284"
-            landmarkName = "-viewWillAppear:"
->>>>>>> adf413bcc08e08eae2e0e9250117354e8a3cce4b
-            landmarkType = "5">
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
-            shouldBeEnabled = "No"
-<<<<<<< HEAD
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "sambaMe/MeDownloadFileVC.m"
@@ -1250,8 +1007,8 @@
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "394"
             endingLineNumber = "394"
-            landmarkName = "-tableView:didSelectRowAtIndexPath:"
-            landmarkType = "5">
+            landmarkName = "@implementation MeDownloadFileVC"
+            landmarkType = "3">
          </BreakpointContent>
       </BreakpointProxy>
       <BreakpointProxy
@@ -1314,8 +1071,8 @@
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "405"
             endingLineNumber = "405"
-            landmarkName = "-tableView:didSelectRowAtIndexPath:"
-            landmarkType = "5">
+            landmarkName = "@implementation MeDownloadFileVC"
+            landmarkType = "3">
          </BreakpointContent>
       </BreakpointProxy>
       <BreakpointProxy
@@ -1372,22 +1129,6 @@
             shouldBeEnabled = "No"
             ignoreCount = "0"
             continueAfterRunningActions = "No"
-            filePath = "sambaMe/MeDownloadFileVC.m"
-            timestampString = "491210009.145865"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "78"
-            endingLineNumber = "78"
-            landmarkName = "-updateRowLocalPathWithKey:withLocalPath:"
-            landmarkType = "5">
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
-            shouldBeEnabled = "No"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
             filePath = "sambaMe/DownloadTableViewCell.m"
             timestampString = "491213073.621753"
             startingColumnNumber = "9223372036854775807"
@@ -1410,8 +1151,8 @@
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "404"
             endingLineNumber = "404"
-            landmarkName = "-tableView:didSelectRowAtIndexPath:"
-            landmarkType = "5">
+            landmarkName = "@implementation MeDownloadFileVC"
+            landmarkType = "3">
          </BreakpointContent>
       </BreakpointProxy>
       <BreakpointProxy
@@ -1426,8 +1167,8 @@
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "224"
             endingLineNumber = "224"
-            landmarkName = "-openFileHandleWithItem:"
-            landmarkType = "5">
+            landmarkName = "@implementation MeDownloadFileVC"
+            landmarkType = "3">
          </BreakpointContent>
       </BreakpointProxy>
       <BreakpointProxy
@@ -1746,8 +1487,8 @@
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "415"
             endingLineNumber = "415"
-            landmarkName = "-tableView:didSelectRowAtIndexPath:"
-            landmarkType = "5">
+            landmarkName = "@implementation MeDownloadFileVC"
+            landmarkType = "3">
          </BreakpointContent>
       </BreakpointProxy>
       <BreakpointProxy
@@ -1762,8 +1503,8 @@
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "422"
             endingLineNumber = "422"
-            landmarkName = "-tableView:didSelectRowAtIndexPath:"
-            landmarkType = "5">
+            landmarkName = "@implementation MeDownloadFileVC"
+            landmarkType = "3">
          </BreakpointContent>
       </BreakpointProxy>
       <BreakpointProxy
@@ -1778,8 +1519,8 @@
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "213"
             endingLineNumber = "213"
-            landmarkName = "-openFileHandleWithItem:"
-            landmarkType = "5">
+            landmarkName = "@implementation MeDownloadFileVC"
+            landmarkType = "3">
          </BreakpointContent>
       </BreakpointProxy>
       <BreakpointProxy
@@ -1794,7 +1535,7 @@
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "108"
             endingLineNumber = "108"
-            landmarkName = "-stopDownloadWithKey:"
+            landmarkName = "-updateRowCurrentSizeWithKey:withCurrentSize:"
             landmarkType = "5">
          </BreakpointContent>
       </BreakpointProxy>
@@ -1826,8 +1567,8 @@
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "257"
             endingLineNumber = "257"
-            landmarkName = "-startDownloadwithKey:withPath:withUser:withPassword:withTotalSize:"
-            landmarkType = "5">
+            landmarkName = "@implementation MeDownloadFileVC"
+            landmarkType = "3">
          </BreakpointContent>
       </BreakpointProxy>
       <BreakpointProxy
@@ -1842,8 +1583,8 @@
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "175"
             endingLineNumber = "175"
-            landmarkName = "-updateDownloadStatus:withItem:"
-            landmarkType = "5">
+            landmarkName = "@implementation MeDownloadFileVC"
+            landmarkType = "3">
          </BreakpointContent>
       </BreakpointProxy>
       <BreakpointProxy
@@ -1858,8 +1599,8 @@
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "208"
             endingLineNumber = "208"
-            landmarkName = "-openFileHandleWithItem:"
-            landmarkType = "5">
+            landmarkName = "@implementation MeDownloadFileVC"
+            landmarkType = "3">
          </BreakpointContent>
       </BreakpointProxy>
       <BreakpointProxy
@@ -1955,177 +1696,6 @@
             startingLineNumber = "57"
             endingLineNumber = "57"
             landmarkName = "-authSuccess"
-=======
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
-            filePath = "sambaMe/MeDownloadFileVC.m"
-            timestampString = "490517754.341359"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "405"
-            endingLineNumber = "405"
-            landmarkName = "-tableView:didSelectRowAtIndexPath:"
-            landmarkType = "5">
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
-            shouldBeEnabled = "No"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
-            filePath = "sambaMe/MeDownloadFileVC.m"
-            timestampString = "490516834.179595"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "80"
-            endingLineNumber = "80"
-            landmarkName = "-updateRowCurrentSizeWithKey:withCurrentSize:"
-            landmarkType = "5">
-            <Locations>
-               <Location
-                  shouldBeEnabled = "No"
-                  ignoreCount = "0"
-                  continueAfterRunningActions = "No"
-                  symbolName = "-[MeDownloadFileVC updateRowCurrentSizeWithKey:withCurrentSize:]"
-                  moduleName = "sambaMe"
-                  usesParentBreakpointCondition = "Yes"
-                  urlString = "file:///Users/shaoqi/Documents/code/git/sambaMe/sambaMe/sambaMe/MeDownloadFileVC.m"
-                  timestampString = "490516835.276049"
-                  startingColumnNumber = "9223372036854775807"
-                  endingColumnNumber = "9223372036854775807"
-                  startingLineNumber = "80"
-                  endingLineNumber = "80"
-                  offsetFromSymbolStart = "116">
-               </Location>
-               <Location
-                  shouldBeEnabled = "No"
-                  ignoreCount = "0"
-                  continueAfterRunningActions = "No"
-                  symbolName = "-[MeDownloadFileVC updateRowCurrentSizeWithKey:withCurrentSize:]"
-                  moduleName = "sambaMe"
-                  usesParentBreakpointCondition = "Yes"
-                  urlString = "file:///Users/shaoqi/Documents/code/git/sambaMe/sambaMe/sambaMe/MeDownloadFileVC.m"
-                  timestampString = "490516835.276252"
-                  startingColumnNumber = "9223372036854775807"
-                  endingColumnNumber = "9223372036854775807"
-                  startingLineNumber = "80"
-                  endingLineNumber = "80"
-                  offsetFromSymbolStart = "136">
-               </Location>
-            </Locations>
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
-            shouldBeEnabled = "No"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
-            filePath = "sambaMe/MeDownloadFileVC.m"
-            timestampString = "490516810.201186"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "64"
-            endingLineNumber = "64"
-            landmarkName = "-updateRowLocalPathWithKey:withLocalPath:"
-            landmarkType = "5">
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
-            shouldBeEnabled = "No"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
-            filePath = "sambaMe/DownloadTableViewCell.m"
-            timestampString = "490517543.005868"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "345"
-            endingLineNumber = "345"
-            landmarkName = "-setDownloadState:"
-            landmarkType = "5">
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
-            shouldBeEnabled = "No"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
-            filePath = "sambaMe/MeDownloadFileVC.m"
-            timestampString = "490517754.341359"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "404"
-            endingLineNumber = "404"
-            landmarkName = "-tableView:didSelectRowAtIndexPath:"
-            landmarkType = "5">
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
-            shouldBeEnabled = "No"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
-            filePath = "sambaMe/MeDownloadFileVC.m"
-            timestampString = "490517486.351688"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "212"
-            endingLineNumber = "212"
-            landmarkName = "-openFileHandleWithItem:"
-            landmarkType = "5">
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
-            shouldBeEnabled = "No"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
-            filePath = "sambaMe/DownloadTableViewCell.m"
-            timestampString = "490517826.040767"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "333"
-            endingLineNumber = "333"
-            landmarkName = "-setDownloadState:"
-            landmarkType = "5">
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
-            shouldBeEnabled = "No"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
-            filePath = "sambaMe/MeTreeVC.m"
-            timestampString = "490518332.742664"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "415"
-            endingLineNumber = "415"
-            landmarkName = "-tableView:accessoryButtonTappedForRowWithIndexPath:"
-            landmarkType = "5">
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
-            shouldBeEnabled = "No"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
-            filePath = "sambaMe/MeTreeVC.m"
-            timestampString = "490518645.840081"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "418"
-            endingLineNumber = "418"
-            landmarkName = "-tableView:accessoryButtonTappedForRowWithIndexPath:"
->>>>>>> adf413bcc08e08eae2e0e9250117354e8a3cce4b
             landmarkType = "5">
          </BreakpointContent>
       </BreakpointProxy>

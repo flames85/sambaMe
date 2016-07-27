@@ -57,7 +57,6 @@
     _tableView.dataSource = self;
     
     // 数据
-<<<<<<< HEAD
     _items = [[Database sharedDatabase] getAllDownloadFile];
     
     [_tableView reloadData];
@@ -73,9 +72,6 @@
                       withUser:item.user
                   withPassword:item.password
                  withTotalSize:item.totalSize];
-=======
-    _items = [[NSMutableArray alloc] init];
->>>>>>> adf413bcc08e08eae2e0e9250117354e8a3cce4b
 }
 
 -(void)updateRowLocalPathWithKey:(NSString*)key withLocalPath:(NSString*)localPath {
@@ -107,21 +103,6 @@
     }
 }
 
-<<<<<<< HEAD
-=======
-//- (void)stopDownloadWithItem:(DownloadingItem*)item
-//{
-//    if (item.fileHandle) {
-//        
-//        [item.fileHandle closeFile];
-//        item.fileHandle = nil;
-//    }
-//    if (item.smbFile) {
-//        [item.smbFile close];
-//        item.smbFile = nil;
-//    }
-//}
->>>>>>> adf413bcc08e08eae2e0e9250117354e8a3cce4b
 
 -(BOOL)stopDownloadWithKey:(NSString*)key {
     DownloadingItem *downloadingItem = [_downloadingDic objectForKey:key];
@@ -160,7 +141,6 @@
             [self stopDownloadWithKey:downloadingItem.key];
             
         } else {
-<<<<<<< HEAD
             if (downloadingItem.fileHandle) { // 代表正在下载
                 
                 // 写入文件
@@ -172,17 +152,6 @@
                 // 更新数组和cell
                 [self updateRowCurrentSizeWithKey:downloadingItem.key withCurrentSize:downloadingItem.currentSize];
                 
-=======
-            downloadingItem.currentSize += data.length;
-
-            // 更新数组和cell
-            [self updateRowCurrentSizeWithKey:downloadingItem.key withCurrentSize:downloadingItem.currentSize];
-            
-            if (downloadingItem.fileHandle) { // 代表正在下载
-                
-                [downloadingItem.fileHandle writeData:data];
-                
->>>>>>> adf413bcc08e08eae2e0e9250117354e8a3cce4b
                 if(downloadingItem.currentSize == downloadingItem.totalSize) {
                     
                     [self stopDownloadWithKey:downloadingItem.key];
@@ -204,10 +173,7 @@
                 }
             } else {
                 NSLog(@"从指针为空判断出, 下载已经停止");
-<<<<<<< HEAD
                 [self stopDownloadWithKey:downloadingItem.key];
-=======
->>>>>>> adf413bcc08e08eae2e0e9250117354e8a3cce4b
             }
             
         }
@@ -238,7 +204,6 @@
     }
     downloading.localPath = [NSString stringWithFormat:@"%@/%@", folder, downloading.remotePath.lastPathComponent];;
     
-<<<<<<< HEAD
     // 假如文件不存在
     if (![[NSFileManager defaultManager] fileExistsAtPath:downloading.localPath]) {
         // 创建文件
@@ -254,16 +219,6 @@
         [downloading.fileHandle seekToFileOffset:downloading.currentSize];
         [downloading.smbFile seekToFileOffset:downloading.currentSize whence:0];
     }
-=======
-    if ([[NSFileManager defaultManager] fileExistsAtPath:downloading.localPath])
-        [[NSFileManager defaultManager] removeItemAtPath:downloading.localPath error:nil];
-    [[NSFileManager defaultManager]  createFileAtPath:downloading.localPath contents:nil attributes:nil];
-    
-    
-    downloading.fileHandle = [NSFileHandle fileHandleForWritingToURL:[NSURL fileURLWithPath:downloading.localPath]
-                                                        error:&error];
-    
->>>>>>> adf413bcc08e08eae2e0e9250117354e8a3cce4b
     
     // 更新本地相对路径
     NSString *relativeLocalPath = [NSString stringWithFormat:@"%@/%@", downloading.key, downloading.localPath.lastPathComponent];
@@ -272,14 +227,10 @@
 
 
 -(void)downloadWithItem:(DownloadingItem*)item {
-<<<<<<< HEAD
     
     
     __weak __typeof(self) weakSelf = self;
     
-=======
-    __weak __typeof(self) weakSelf = self;
->>>>>>> adf413bcc08e08eae2e0e9250117354e8a3cce4b
     [item.smbFile readDataOfLength:1024*1024
                                         block:^(id result)
      {
@@ -328,22 +279,15 @@
          if ([result isKindOfClass:[NSError class]]) {
              NSLog(@"fail:%@", ((NSError *)result).localizedDescription);
          } else {
-<<<<<<< HEAD
              if ([result isKindOfClass:[KxSMBItemFile class]]) { // 文件
-=======
-             if ([result isKindOfClass:[KxSMBItemFile class]]) {
->>>>>>> adf413bcc08e08eae2e0e9250117354e8a3cce4b
                  
                  
                  downloadingItem.smbFile = (KxSMBItemFile*)result;
                  // open file handle
                  [self openFileHandleWithItem:downloadingItem];
-<<<<<<< HEAD
                  
 
  
-=======
->>>>>>> adf413bcc08e08eae2e0e9250117354e8a3cce4b
                  // downlaod
                  [self downloadWithItem:downloadingItem];
              }
@@ -353,27 +297,6 @@
 }
 
 
-<<<<<<< HEAD
-=======
--(void)viewWillAppear:(BOOL)animated {
-    
-    _items = [[Database sharedDatabase] getAllDownloadFile];
-    
-//    for (DownloadFileItem *item in _items) {
-//        if (item.currentSize < item.totalSize) {
-//            [self startDownloadwithKey:item.key
-//                              withPath:item.remotePath
-//                               withUser:item.user
-//                          withPassword:item.password
-//                         withTotalSize:item.totalSize];
-//        }
-//    }
-//    
-    [_tableView reloadData];
-    
-}
-
->>>>>>> adf413bcc08e08eae2e0e9250117354e8a3cce4b
 #pragma mark - delegate UITableViewDataSource section数
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
     return 1;
